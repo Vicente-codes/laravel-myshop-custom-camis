@@ -3,141 +3,108 @@
 namespace App\Http\Controllers;
 
 use App\Traits\LoadsMockData;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /**
  * CONTROLADOR: CartController
  * 
- * RESPONSABILIDAD: Gestionar el carrito de compras
+ * RESPONSABILIDAD:
+ * Gestiona operaciones relacionadas con el carrito de compras.
  * 
  * MÉTODOS:
- *   - index(): Mostrar el contenido del carrito
- *   - store(): Añadir un producto al carrito
- *   - update(): Actualizar la cantidad de un producto en el carrito
+ * - index: Mostrar el contenido actual del carrito
+ * - store: Añadir un producto al carrito (simulado)
+ * - update: Actualizar cantidad de producto en carrito (simulado)
+ * 
+ * RUTAS:
+ * - GET /cart => CartController@index (ver carrito)
+ * - POST /cart => CartController@store (añadir producto)
+ * - PUT /cart/{id} => CartController@update (actualizar cantidad)
  */
+
 class CartController extends Controller
 {
+    // Importamos el trait para acceso a métodos de datos mock
     use LoadsMockData;
 
     /**
      * MÉTODO: index()
      * 
-     * PROPÓSITO: Mostrar el estado actual del carrito de compras
+     * DESCRIPCIÓN:
+     * Muestra el contenido actual del carrito de compras del usuario.
+     * Muestra cada producto con su nombre, precio y cantidad.
      * 
-     * RUTA: GET /cart
-     * NOMBRE DE RUTA: cart.index
+     * PASOS:
+     * 1. Carga el carrito actual (items del carrito)
+     * 2. Carga todos los productos para obtener sus nombres y precios
+     * 3. Enriquece cada item del carrito con:
+     *    - Nombre del producto
+     *    - Precio del producto
+     * 4. Retorna la vista cart.index con los items del carrito
      * 
-     * LÓGICA:
-     *   1. Cargar el carrito (items simulados)
-     *   2. Cargar todos los productos
-     *   3. Para cada item del carrito, buscar su producto
-     *   4. Combinar datos del item + datos del producto
-     *   5. Enviar a la vista
-     * 
-     * RETORNA: Vista con contenido del carrito
+     * RETORNA: Vista cart/index.blade.php con:
+     * - $cartItems: array con items del carrito (enriquecidos con nombre y precio)
      */
     public function index(): View
     {
-        // Obtener el carrito (array de items)
+        // PASO 1: Cargar el carrito actual
         $cart = $this->getCart();
-        
-        // Obtener todos los productos (para buscar nombres y precios)
+
+        // PASO 2: Cargar todos los productos
         $products = $this->getProducts();
 
-        /**
-         * Enriquecer items del carrito con información de productos
-         * 
-         * Convertimos esto:
-         *   ['id' => 1, 'product_id' => 1, 'quantity' => 2, ...]
-         * 
-         * A esto:
-         *   ['id' => 1, 'product_id' => 1, 'quantity' => 2, 
-         *    'name' => 'Camiseta...', 'price' => 8.50, ...]
-         */
+        // PASO 3: Enriquecer cada item del carrito
+        // Añadimos nombre y precio del producto a cada item
         $cartWithProducts = [];
-        
         foreach ($cart as $item) {
-            // Buscamos el producto correspondiente a este item
+            // Obtener el producto para este item
             $product = $products[$item['product_id']] ?? null;
-            
-            /**
-             * Combinamos el item del carrito con los datos del producto
-             * 
-             * array_merge() une dos arrays
-             * Si hay claves duplicadas, el segundo array sobrescribe
-             */
-            $cartWithProducts[] = array_merge($item, [
-                'name' => $product ? $product['name'] : 'Producto no encontrado',
-                'price' => $product ? $product['price'] : 0
-            ]);
+
+            // Crear item enriquecido con datos del producto
+            $cartWithProducts[] = array_merge(
+                $item,
+                [
+                    'name' => $product ? $product['name'] : 'Producto no encontrado',
+                    'price' => $product ? $product['price'] : 0,
+                ]
+            );
         }
 
-        /**
-         * Enviar los items del carrito enriquecidos a la vista
-         */
-        return view('cart.index', [
-            'cartItems' => $cartWithProducts
-        ]);
+        // PASO 4: Retornar la vista con items del carrito
+        return view('cart.index', ['cartItems' => $cartWithProducts]);
     }
 
     /**
      * MÉTODO: store()
      * 
-     * PROPÓSITO: Añadir un nuevo producto al carrito
+     * DESCRIPCIÓN:
+     * Añade un nuevo producto al carrito.
      * 
-     * RUTA: POST /cart
-     * NOMBRE DE RUTA: cart.store
-     * 
-     * PARÁMETROS:
-     *   @param Request $request Datos del formulario (product_id, quantity)
-     * 
-     * NOTA: En esta práctica es simulado, no guarda realmente
-     * 
-     * RETORNA: Redirección al carrito con mensaje de éxito
+     * POR AHORA: Solo simulamos que se añadió el producto.
+     * Más tarde se implementará la lógica real con sesiones.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        /**
-         * En una aplicación real:
-         *   1. Validaríamos que product_id y quantity sean válidos
-         *   2. Buscaríamos el producto
-         *   3. Lo guardaríamos en la sesión o base de datos
-         *   4. Retornaríamos un mensaje de éxito
-         */
-        
-        return redirect()->route('cart.index')
+        return redirect()
+            ->route('cart.index')
             ->with('success', 'Producto añadido al carrito exitosamente');
     }
 
     /**
      * MÉTODO: update()
      * 
-     * PROPÓSITO: Actualizar la cantidad de un producto en el carrito
+     * DESCRIPCIÓN:
+     * Actualiza la cantidad de un producto en el carrito.
      * 
-     * RUTA: PUT/PATCH /cart/{id}
-     * NOMBRE DE RUTA: cart.update
-     * 
-     * PARÁMETROS:
-     *   @param Request $request Datos nuevos (quantity)
-     *   @param string $id El ID del item en el carrito
-     * 
-     * NOTA: En esta práctica es simulado
-     * 
-     * RETORNA: Redirección al carrito con mensaje de éxito
+     * POR AHORA: Solo simulamos que se actualizó la cantidad.
+     * Más tarde se implementará la lógica real con sesiones.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
-        /**
-         * En una aplicación real:
-         *   1. Validaríamos que la cantidad sea válida (0-99)
-         *   2. Si es 0, eliminaríamos el producto del carrito
-         *   3. Si es > 0, actualizaríamos la cantidad
-         *   4. Guardaríamos en sesión o base de datos
-         *   5. Retornaríamos un mensaje de éxito
-         */
-        
-        return redirect()->route('cart.index')
+        return redirect()
+            ->route('cart.index')
             ->with('success', 'Cantidad actualizada exitosamente');
     }
 }

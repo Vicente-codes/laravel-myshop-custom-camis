@@ -3,113 +3,108 @@
 namespace App\Http\Controllers;
 
 use App\Traits\LoadsMockData;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /**
  * CONTROLADOR: CategoryController
  * 
- * RESPONSABILIDAD: Gestionar la navegación y visualización de categorías
+ * RESPONSABILIDAD:
+ * Gestiona operaciones relacionadas con categorías de productos.
  * 
  * MÉTODOS:
- *   - index(): Listar todas las categorías
- *   - show(): Mostrar productos de una categoría específica
+ * - index: Listar todas las categorías
+ * - show: Mostrar todos los productos de una categoría específica
+ * 
+ * RUTAS:
+ * - GET /categories => CategoryController@index (lista de categorías)
+ * - GET /categories/{id} => CategoryController@show (productos de categoría)
  */
+
 class CategoryController extends Controller
 {
+    // Importamos el trait para acceso a métodos de datos mock
     use LoadsMockData;
 
     /**
      * MÉTODO: index()
      * 
-     * PROPÓSITO: Mostrar TODAS las categorías disponibles
+     * DESCRIPCIÓN:
+     * Muestra un listado de TODAS las categorías disponibles en la tienda.
+     * Permite al usuario explorar y filtrar productos por categoría.
      * 
-     * RUTA: GET /categories
-     * NOMBRE DE RUTA: categories.index
+     * PASOS:
+     * 1. Carga todas las categorías desde el mock
+     * 2. Retorna la vista categories.index con todas las categorías
      * 
-     * LÓGICA:
-     *   1. Cargar todas las categorías
-     *   2. Enviar a la vista para mostrarlas en grid
-     * 
-     * RETORNA: Vista con listado de categorías
+     * RETORNA: Vista categories/index.blade.php con:
+     * - $categories: array con todas las categorías
      */
     public function index(): View
     {
-        // Obtener todas las categorías
+        // PASO 1: Cargar todas las categorías
         $categories = $this->getCategories();
 
-        // Enviar a la vista 'categories.index'
-        return view('categories.index', ['categories' => $categories]);
+        // PASO 2: Retornar la vista con las categorías
+        return view('categories.index', compact('categories'));
     }
 
     /**
      * MÉTODO: show()
      * 
-     * PROPÓSITO: Mostrar todos los productos de una categoría específica
+     * DESCRIPCIÓN:
+     * Muestra todos los PRODUCTOS pertenecientes a una categoría específica.
      * 
-     * RUTA: GET /categories/{id}
-     * NOMBRE DE RUTA: categories.show
+     * PASOS:
+     * 1. Obtiene el ID de la categoría de la URL
+     * 2. Valida que el ID sea un número válido
+     * 3. Carga todas las categorías
+     * 4. Busca la categoría con ese ID
+     * 5. Valida que la categoría exista
+     * 6. Carga todos los productos
+     * 7. FILTRA: Mantiene solo los productos cuya category_id coincida
+     * 8. Enriquece los productos filtrados con datos de ofertas
+     * 9. Retorna la vista show con la categoría y sus productos
      * 
-     * PARÁMETROS:
-     *   @param string $id El ID de la categoría
+     * PARÁMETRO: $id - ID de la categoría (de la URL)
      * 
-     * LÓGICA:
-     *   1. Validar que el ID sea válido
-     *   2. Cargar la categoría por su ID
-     *   3. Si no existe, mostrar error 404
-     *   4. Cargar todos los productos
-     *   5. Filtrar solo los que pertenecen a esta categoría
-     *   6. Enriquecer productos con ofertas
-     *   7. Enviar a la vista
+     * RETORNA: Vista categories/show.blade.php con:
+     * - $category: array con datos de la categoría
+     * - $categoryProducts: array con productos de esa categoría
      * 
-     * RETORNA: Vista con productos de la categoría o error 404
+     * O: Error 404 si la categoría no existe
      */
     public function show(string $id): View
     {
-        /**
-         * Validación del ID
-         * Verificamos que sea un número válido (> 0)
-         */
+        // PASO 1: Validar que el ID sea un número
         if (!is_numeric($id) || $id < 1) {
             abort(404, 'ID de categoría inválido');
         }
 
-        // Cargar todas las categorías
+        // PASO 2: Cargar todas las categorías
         $categories = $this->getCategories();
 
-        /**
-         * Buscar la categoría específica
-         */
+        // PASO 3: Buscar la categoría con ese ID
         $category = $categories[$id] ?? null;
 
-        // Si no existe, mostrar error 404
+        // PASO 4: Validar que la categoría exista
         if (!$category) {
             abort(404, 'Categoría no encontrada');
         }
 
-        /**
-         * Cargar todos los productos
-         */
+        // PASO 5: Cargar todos los productos
         $products = $this->getProducts();
 
-        /**
-         * Filtrar productos por categoría
-         * 
-         * array_filter() mantiene solo los productos cuyo 'category_id'
-         * coincide con el ID de la categoría que estamos viendo
-         * 
-         * use($id) importa el ID dentro de la función anónima
-         */
-        $categoryProducts = array_filter($products, function($product) use ($id) {
+        // PASO 6: FILTRAR: Mantener solo productos de esta categoría
+        // array_filter aplica una función a cada producto
+        // Mantenemos solo los donde category_id == id de categoría
+        $categoryProducts = array_filter($products, function ($product) use ($id) {
             return $product['category_id'] == $id;
         });
 
-        /**
-         * Enriquecer los productos con datos de ofertas
-         */
+        // PASO 7: Enriquecer los productos filtrados
         $categoryProducts = $this->enrichProductsWithOffers($categoryProducts);
 
-        // Enviar la categoría y sus productos a la vista
+        // PASO 8: Retornar la vista con la categoría y sus productos
         return view('categories.show', compact('category', 'categoryProducts'));
     }
 }

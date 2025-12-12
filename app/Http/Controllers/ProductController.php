@@ -3,277 +3,236 @@
 namespace App\Http\Controllers;
 
 use App\Traits\LoadsMockData;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 /**
  * CONTROLADOR: ProductController
  * 
- * RESPONSABILIDAD: Gestionar todas las operaciones con productos
+ * RESPONSABILIDAD:
+ * Gestiona TODOS las operaciones relacionadas con productos.
+ * Es un controlador RESOURCE, por lo que implementa:
+ * - index: Listar todos los productos
+ * - create: Mostrar formulario de creación (simulado)
+ * - store: Guardar nuevo producto (simulado)
+ * - show: Mostrar detalle de un producto específico
+ * - edit: Mostrar formulario de edición (simulado)
+ * - update: Guardar cambios (simulado)
+ * - destroy: Eliminar un producto (simulado)
  * 
- * Este es un controlador RESOURCE, lo que significa que implementa
- * los métodos estándar CRUD de Laravel:
- *   - index(): Listar todos los productos
- *   - create(): Mostrar formulario de creación
- *   - store(): Guardar un nuevo producto
- *   - show(): Ver detalle de un producto
- *   - edit(): Mostrar formulario de edición
- *   - update(): Actualizar un producto existente
- *   - destroy(): Eliminar un producto
- * 
- * Además añadimos:
- *   - onSale(): Mostrar solo productos con ofertas
+ * RUTAS GENERADAS:
+ * - GET /products => ProductController@index (lista de todos)
+ * - GET /products/create => ProductController@create (formulario)
+ * - POST /products => ProductController@store (guardar)
+ * - GET /products/{id} => ProductController@show (detalle)
+ * - GET /products/{id}/edit => ProductController@edit (editar formulario)
+ * - PUT /products/{id} => ProductController@update (guardar cambios)
+ * - DELETE /products/{id} => ProductController@destroy (eliminar)
+ * - GET /products/on-sale => ProductController@onSale (solo con ofertas)
  */
+
 class ProductController extends Controller
 {
+    // Importamos el trait para acceso a métodos de datos mock
     use LoadsMockData;
 
     /**
      * MÉTODO: index()
      * 
-     * PROPÓSITO: Mostrar el listado de TODOS los productos
+     * DESCRIPCIÓN:
+     * Muestra un listado de TODOS los productos disponibles en la tienda.
      * 
-     * RUTA: GET /products
-     * NOMBRE DE RUTA: products.index
+     * PASOS:
+     * 1. Carga todos los productos
+     * 2. Enriquece cada producto con sus datos de oferta
+     * 3. Retorna la vista products.index con todos los productos
      * 
-     * LÓGICA:
-     *   1. Cargar todos los productos
-     *   2. Enriquecer con datos de ofertas
-     *   3. Enviar a la vista para mostrarlos
-     * 
-     * RETORNA: Vista con listado de productos
+     * RETORNA: Vista products/index.blade.php con:
+     * - $products: array con todos los productos enriquecidos
      */
     public function index(): View
     {
-        // Obtener todos los productos
+        // PASO 1: Cargar todos los productos
         $products = $this->getProducts();
 
-        /**
-         * Enriquecer productos con:
-         *   - offer: datos de la oferta asociada
-         *   - final_price: precio con descuento
-         */
+        // PASO 2: Enriquecer productos con ofertas y precios finales
         $enrichedProducts = $this->enrichProductsWithOffers($products);
 
-        // Enviar a la vista 'products.index'
-        // El array $enrichedProducts estará disponible como $products en la vista
+        // PASO 3: Retornar la vista con los productos
         return view('products.index', ['products' => $enrichedProducts]);
     }
 
     /**
      * MÉTODO: onSale()
      * 
-     * PROPÓSITO: Mostrar SOLO los productos que tienen oferta activa
+     * DESCRIPCIÓN:
+     * Muestra SOLO los productos que tienen una oferta activa.
+     * Esto crea la sección de "Ofertas Especiales" de la tienda.
      * 
-     * RUTA: GET /products-on-sale
-     * NOMBRE DE RUTA: products.on-sale
+     * PASOS:
+     * 1. Carga todos los productos
+     * 2. Enriquece cada producto con sus datos de oferta
+     * 3. FILTRA: Mantiene solo los que tienen offer_id != null
+     * 4. Retorna la vista products.index (la misma que index())
+     *    pero solo con productos con oferta
      * 
-     * LÓGICA:
-     *   1. Cargar todos los productos
-     *   2. Enriquecer con ofertas
-     *   3. Filtrar solo aquellos cuya 'offer' no sea null
-     *   4. Enviar a la vista
-     * 
-     * RETORNA: Vista con solo productos en oferta
+     * RETORNA: Vista products/index.blade.php con:
+     * - $products: array solo con productos que tienen oferta
      */
     public function onSale(): View
     {
-        // Obtener todos los productos
+        // PASO 1: Cargar todos los productos
         $products = $this->getProducts();
-        
-        // Enriquecer con datos de ofertas
+
+        // PASO 2: Enriquecer productos
         $enrichedProducts = $this->enrichProductsWithOffers($products);
 
-        /**
-         * Filtrar productos que tengan oferta
-         * 
-         * array_filter() recorre el array y mantiene solo los elementos
-         * que hacen true la función de comparación
-         * 
-         * En nuestro caso: mantener solo si $product['offer'] !== null
-         */
-        $productsOnSale = array_filter($enrichedProducts, function($product) {
+        // PASO 3: FILTRAR: Mantener solo productos con oferta
+        // array_filter mantiene solo los elementos donde la función retorna true
+        // Condición: el producto debe tener 'offer' que NO sea null
+        $productsOnSale = array_filter($enrichedProducts, function ($product) {
             return $product['offer'] !== null;
         });
 
-        // Enviar a la misma vista que index(), pero con solo productos en oferta
+        // PASO 4: Retornar la vista con solo productos en oferta
         return view('products.index', ['products' => $productsOnSale]);
     }
 
     /**
      * MÉTODO: create()
      * 
-     * PROPÓSITO: Mostrar el formulario para crear un nuevo producto
+     * DESCRIPCIÓN:
+     * En una aplicación real, mostraría un formulario para crear un producto.
      * 
-     * RUTA: GET /products/create
-     * NOMBRE DE RUTA: products.create
-     * 
-     * NOTA: En esta práctica es simulado, no hay formulario real
-     * 
-     * RETORNA: Redirección a la lista con mensaje
+     * POR AHORA: Solo simulamos que se creó un producto.
+     * Más tarde se implementará la funcionalidad real con formulario.
      */
-    public function create()
+    public function create(): RedirectResponse
     {
-        return redirect()->route('products.index')
+        return redirect()
+            ->route('products.index')
             ->with('success', 'Formulario de creación de producto (simulado)');
     }
 
     /**
      * MÉTODO: store()
      * 
-     * PROPÓSITO: Guardar un nuevo producto en la base de datos
+     * DESCRIPCIÓN:
+     * En una aplicación real, guardería el producto en la base de datos.
      * 
-     * RUTA: POST /products
-     * NOMBRE DE RUTA: products.store
-     * 
-     * PARÁMETROS:
-     *   @param Request $request Los datos del formulario
-     * 
-     * NOTA: En esta práctica es simulado, no guarda datos reales
-     * 
-     * RETORNA: Redirección a la lista con mensaje de éxito
+     * POR AHORA: Solo redirigimos con un mensaje simulado.
+     * Más tarde se implementará la lógica de guardado real.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        return redirect()->route('products.index')
+        return redirect()
+            ->route('products.index')
             ->with('success', 'Producto creado exitosamente');
     }
 
     /**
      * MÉTODO: show()
      * 
-     * PROPÓSITO: Mostrar los detalles completos de un producto específico
+     * DESCRIPCIÓN:
+     * Muestra el DETALLE COMPLETO de un producto específico.
      * 
-     * RUTA: GET /products/{id}
-     * NOMBRE DE RUTA: products.show
+     * PASOS:
+     * 1. Obtiene el ID del producto de la URL
+     * 2. Valida que el ID sea un número válido
+     * 3. Carga todos los productos
+     * 4. Busca el producto con ese ID
+     * 5. Valida que el producto exista
+     * 6. Enriquece el producto con datos de oferta
+     * 7. Obtiene la categoría del producto
+     * 8. Retorna la vista show con todos los datos del producto
      * 
-     * PARÁMETROS:
-     *   @param string $id El ID del producto a mostrar
+     * PARÁMETRO: $id - ID del producto a mostrar (de la URL)
      * 
-     * LÓGICA:
-     *   1. Validar que el ID sea un número válido
-     *   2. Cargar el producto por su ID
-     *   3. Si no existe, mostrar error 404
-     *   4. Enriquecer el producto con oferta y precio final
-     *   5. Cargar la categoría del producto
-     *   6. Enviar a la vista de detalle
+     * RETORNA: Vista products/show.blade.php con:
+     * - $product: array con datos completos del producto enriquecido
+     * - $category: array con datos de la categoría del producto
      * 
-     * RETORNA: Vista con detalle del producto o error 404
+     * O: Error 404 si el ID no es válido o el producto no existe
      */
     public function show(string $id): View
     {
-        /**
-         * Validación del ID
-         * 
-         * Comprobamos que:
-         *   - is_numeric($id): Es un número
-         *   - $id < 1: No es cero ni negativo
-         * 
-         * Si falla, abort(404) muestra página de error
-         */
+        // PASO 1: Validar que el ID sea un número
         if (!is_numeric($id) || $id < 1) {
+            // Si no es válido, mostrar error 404
             abort(404, 'ID de producto inválido');
         }
 
-        // Obtener todos los productos
+        // PASO 2: Cargar todos los productos
         $products = $this->getProducts();
 
-        /**
-         * Buscar el producto por su ID
-         * 
-         * $products[$id] ?? null significa:
-         *   - Si existe $products[$id], usar ese valor
-         *   - Si no existe, usar null
-         */
+        // PASO 3: Buscar el producto con ese ID
+        // Accedemos directamente al array por índice
         $product = $products[$id] ?? null;
 
-        // Si el producto no existe, mostrar error
+        // PASO 4: Validar que el producto exista
         if (!$product) {
+            // Si no existe, mostrar error 404
             abort(404, 'Producto no encontrado');
         }
 
-        /**
-         * Enriquecer el producto
-         * 
-         * Lo metemos en un array temporal para poder usar enrichProductsWithOffers
-         * Luego extraemos el resultado
-         */
+        // PASO 5: Enriquecer el producto con datos de oferta
         $enrichedProducts = $this->enrichProductsWithOffers([$id => $product]);
         $product = $enrichedProducts[$id];
 
-        /**
-         * Obtener la categoría del producto
-         * 
-         * Usamos $product['category_id'] para encontrar su categoría
-         */
+        // PASO 6: Obtener la categoría del producto
         $categories = $this->getCategories();
         $category = $categories[$product['category_id']] ?? null;
 
-        // Enviar el producto enriquecido y su categoría a la vista
+        // PASO 7: Retornar la vista con datos completos
         return view('products.show', compact('product', 'category'));
     }
 
     /**
      * MÉTODO: edit()
      * 
-     * PROPÓSITO: Mostrar el formulario para editar un producto
+     * DESCRIPCIÓN:
+     * En una aplicación real, mostraría un formulario para editar un producto.
      * 
-     * RUTA: GET /products/{id}/edit
-     * NOMBRE DE RUTA: products.edit
-     * 
-     * PARÁMETROS:
-     *   @param string $id El ID del producto a editar
-     * 
-     * NOTA: En esta práctica es simulado
-     * 
-     * RETORNA: Redirección al detalle con mensaje
+     * POR AHORA: Solo simulamos que se editó un producto.
+     * Más tarde se implementará la funcionalidad real con formulario.
      */
-    public function edit(string $id)
+    public function edit(string $id): RedirectResponse
     {
-        return redirect()->route('products.show', $id)
-            ->with('success', 'Producto editado');
+        return redirect()
+            ->route('products.show', $id)
+            ->with('success', 'Producto editado (simulado)');
     }
 
     /**
      * MÉTODO: update()
      * 
-     * PROPÓSITO: Actualizar un producto existente
+     * DESCRIPCIÓN:
+     * En una aplicación real, guardaría los cambios en la base de datos.
      * 
-     * RUTA: PUT/PATCH /products/{id}
-     * NOMBRE DE RUTA: products.update
-     * 
-     * PARÁMETROS:
-     *   @param Request $request Los datos nuevos del formulario
-     *   @param string $id El ID del producto a actualizar
-     * 
-     * NOTA: En esta práctica es simulado
-     * 
-     * RETORNA: Redirección al detalle con mensaje de éxito
+     * POR AHORA: Solo redirigimos con un mensaje simulado.
+     * Más tarde se implementará la lógica de guardado real.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): RedirectResponse
     {
-        return redirect()->route('products.show', $id)
+        return redirect()
+            ->route('products.show', $id)
             ->with('success', 'Producto actualizado exitosamente');
     }
 
     /**
      * MÉTODO: destroy()
      * 
-     * PROPÓSITO: Eliminar un producto de la tienda
+     * DESCRIPCIÓN:
+     * En una aplicación real, eliminaría el producto de la base de datos.
      * 
-     * RUTA: DELETE /products/{id}
-     * NOMBRE DE RUTA: products.destroy
-     * 
-     * PARÁMETROS:
-     *   @param string $id El ID del producto a eliminar
-     * 
-     * NOTA: En esta práctica es simulado
-     * 
-     * RETORNA: Redirección a la lista con mensaje de éxito
+     * POR AHORA: Solo redirigimos con un mensaje simulado.
+     * Más tarde se implementará la lógica de eliminación real.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        return redirect()->route('products.index')
+        return redirect()
+            ->route('products.index')
             ->with('success', 'Producto eliminado exitosamente');
     }
 }

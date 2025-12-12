@@ -1,21 +1,3 @@
-<!-- resources/views/welcome.blade.php -->
-<!-- 
-    VISTA: Welcome (Página de Inicio)
-    
-    PROPÓSITO: Página principal de la tienda
-    
-    CARACTERÍSTICAS:
-      - Extiende del layout maestro
-      - Sección hero con llamadas a la acción
-      - Muestra categorías destacadas
-      - Muestra productos destacados
-      - Usa componentes reutilizables
-    
-    DATOS DEL CONTROLADOR:
-      - $featuredProducts: Primeros 3 productos enriquecidos
-      - $featuredCategories: Primeras 4 categorías
--->
-
 @extends('layouts.app')
 
 @section('title', 'Inicio - Custom Camis')
@@ -29,67 +11,58 @@
 @endpush
 
 @section('content')
-    <!-- SECCIÓN HERO -->
+    <!-- Hero Section -->
     <section class="hero-gradient text-white py-20">
         <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+            <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
                 Bienvenido a Custom Camis
-            </h1>
+            </h2>
             <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-                Camisetas personalizadas de alta calidad. 
-                Soluciones para empresas y eventos especiales.
+                Personaliza tus camisetas bajo demanda. Serigrafía, DTG, vinilo. Perfecto para eventos corporativos, uniformes y equipos deportivos.
             </p>
-            
-            <!-- BOTONES DE LLAMADA A LA ACCIÓN -->
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="{{ route('products.index') }}" 
-                   class="bg-white text-primary-600 font-bold py-4 px-8 rounded-full hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105">
-                    Ver Productos
+                <a href="{{ route('products.index') }}"
+                   class="bg-white text-primary-600 font-bold py-4 px-8 rounded-full hover:bg-gray-100 transition duration-300">
+                    Ver Todos los Productos
                 </a>
-                <a href="{{ route('products.on-sale') }}" 
-                   class="border-2 border-white text-white font-bold py-4 px-8 rounded-full hover:bg-white hover:text-primary-600 transition duration-300 ease-in-out">
-                    🏷 Ofertas Especiales
+                <a href="{{ route('products.on-sale') }}"
+                   class="border-2 border-white text-white font-bold py-4 px-8 rounded-full hover:bg-white hover:text-primary-600 transition duration-300">
+                    Ofertas Especiales
                 </a>
             </div>
         </div>
     </section>
-    
-    <!-- SECCIÓN: CATEGORÍAS DESTACADAS -->
+
+    <!-- Categorías Destacadas -->
     <section class="py-16">
         <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold mb-12 text-center text-gray-900">
+            <h3 class="text-3xl font-bold mb-12 text-center text-gray-900">
                 Nuestras Categorías
-            </h2>
-            
+            </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 @forelse($featuredCategories as $category)
                     <x-category-card :category="$category" />
                 @empty
                     <div class="col-span-full text-center py-12">
-                        <p class="text-gray-500 text-lg">
-                            No hay categorías disponibles.
-                        </p>
+                        <p class="text-gray-500 text-lg">No hay categorías disponibles.</p>
                     </div>
                 @endforelse
             </div>
         </div>
     </section>
-    
-    <!-- SECCIÓN: PRODUCTOS DESTACADOS -->
+
+    <!-- Productos Destacados -->
     <section class="py-16 bg-gray-100">
         <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold mb-12 text-center text-gray-900">
+            <h3 class="text-3xl font-bold mb-12 text-center text-gray-900">
                 Productos Destacados
-            </h2>
-            
+            </h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @forelse($featuredProducts as $product)
                     <x-product-card :product="$product" />
                 @empty
                     <div class="col-span-full text-center py-12">
-                        <p class="text-gray-500 text-lg">
-                            No hay productos destacados.
-                        </p>
+                        <p class="text-gray-500 text-lg">No hay productos destacados.</p>
                     </div>
                 @endforelse
             </div>

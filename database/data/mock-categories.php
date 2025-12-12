@@ -2,57 +2,61 @@
 /**
  * ARCHIVO: mock-categories.php
  * 
- * PROPÓSITO: Define todas las categorías de camisetas disponibles
+ * DESCRIPCIÓN:
+ * Este archivo contiene las categorías de productos de la tienda.
+ * Cada categoría es un array asociativo con id, name, slug y description.
+ * Las categorías se usan para organizar los productos en la tienda.
  * 
- * ESTRUCTURA: Un array asociativo donde:
- *   - La clave es el ID de la categoría (1, 2, 3, etc.)
- *   - El valor es otro array con los detalles de la categoría
- * 
- * ATRIBUTOS DE CADA CATEGORÍA:
- *   - id: Identificador único
- *   - name: Nombre de la categoría
- *   - slug: Versión amigable para URLs (sin espacios, minúsculas, con guiones)
- *   - description: Descripción breve de qué tipo de camisetas incluye
+ * ESTRUCTURA DE UNA CATEGORÍA:
+ * - id: Identificador único de la categoría (número)
+ * - name: Nombre de la categoría (string)
+ * - slug: Versión URL-friendly del nombre (string)
+ * - description: Descripción breve de la categoría (string)
  */
 
 return [
-    // Categoría 1: Camisetas Básicas
+    // CATEGORÍA 1: Camisetas Básicas
+    // Son camisetas con colores sólidos, sin diseño personalizado
     1 => [
         'id' => 1,
         'name' => 'Camisetas Básicas',
         'slug' => 'camisetas-basicas',
-        'description' => 'Camisetas lisas de alta calidad, perfectas para personalización con logos y diseños'
+        'description' => 'Camisetas de alta calidad en colores sólidos, ideales para eventos corporativos y uniforme básico'
     ],
-    
-    // Categoría 2: Camisetas Premium
+
+    // CATEGORÍA 2: Camisetas Personalizadas
+    // Camisetas con diseños, logos o texto personalizado
     2 => [
         'id' => 2,
-        'name' => 'Camisetas Premium',
-        'slug' => 'camisetas-premium',
-        'description' => 'Camisetas de tejido premium con acabado superior, ideales para colecciones exclusivas'
+        'name' => 'Camisetas Personalizadas',
+        'slug' => 'camisetas-personalizadas',
+        'description' => 'Camisetas con diseños, logos y textos personalizados. Disponibles en serigrafía, DTG y vinilo'
     ],
-    
-    // Categoría 3: Camisetas Deportivas
+
+    // CATEGORÍA 3: Uniformes Corporativos
+    // Uniformes completos para empresas
     3 => [
         'id' => 3,
-        'name' => 'Camisetas Deportivas',
-        'slug' => 'camisetas-deportivas',
-        'description' => 'Camisetas técnicas para equipos deportivos y eventos, con tecnología transpirable'
+        'name' => 'Uniformes Corporativos',
+        'slug' => 'uniformes-corporativos',
+        'description' => 'Uniformes completos para empresas, con logo bordado o impreso'
     ],
-    
-    // Categoría 4: Camisetas Corporativas
+
+    // CATEGORÍA 4: Prendas Deportivas
+    // Equipos deportivos y prendas técnicas
     4 => [
         'id' => 4,
-        'name' => 'Camisetas Corporativas',
-        'slug' => 'camisetas-corporativas',
-        'description' => 'Camisetas personalizadas para uniformes corporativos y branding empresarial'
+        'name' => 'Prendas Deportivas',
+        'slug' => 'prendas-deportivas',
+        'description' => 'Equipos deportivos y prendas técnicas para equipos y eventos'
     ],
-    
-    // Categoría 5: Camisetas Especiales
+
+    // CATEGORÍA 5: Prendas de Temporada
+    // Colecciones por temporada o eventos especiales
     5 => [
         'id' => 5,
-        'name' => 'Camisetas Especiales',
-        'slug' => 'camisetas-especiales',
-        'description' => 'Ediciones limitadas y diseños especiales para eventos y colaboraciones exclusivas'
-    ]
+        'name' => 'Prendas de Temporada',
+        'slug' => 'prendas-temporada',
+        'description' => 'Colecciones especiales por temporada, eventos y campañas promocionales'
+    ],
 ];

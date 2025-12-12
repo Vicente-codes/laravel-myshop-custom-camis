@@ -2,157 +2,135 @@
 /**
  * ARCHIVO: mock-products.php
  * 
- * PROPÓSITO: Define todos los productos (camisetas) disponibles en la tienda
+ * DESCRIPCIÓN:
+ * Este archivo contiene los productos disponibles en la tienda Custom Camis.
+ * Cada producto es una camiseta, uniforme o prenda deportiva que podemos vender.
  * 
- * ESTRUCTURA: Un array asociativo donde:
- *   - La clave es el ID del producto
- *   - El valor es un array con los detalles del producto
- * 
- * ATRIBUTOS DE CADA PRODUCTO:
- *   - id: Identificador único del producto
- *   - name: Nombre del producto
- *   - description: Descripción detallada de la camiseta
- *   - price: Precio en euros (ej: 15.99)
- *   - category_id: ID de la categoría a la que pertenece
- *   - offer_id: ID de la oferta (null si no tiene oferta)
- *   - stock: Cantidad disponible en almacén
- *   - material: Tipo de tela (ej: "Algodón 100%")
- *   - sizes_available: Tallas disponibles
- * 
- * REGLAS DE NEGOCIO:
- *   - Un producto puede tener UNA oferta activa O ninguna
- *   - Una oferta puede aplicarse a VARIOS productos
- *   - El stock debe ser realista (0-500 unidades típicamente)
+ * ESTRUCTURA DE UN PRODUCTO:
+ * - id: Identificador único del producto (número)
+ * - name: Nombre del producto (string)
+ * - description: Descripción detallada del producto (string)
+ * - price: Precio en euros (número decimal, ej: 9.99)
+ * - category_id: ID de la categoría a la que pertenece (número)
+ * - offer_id: ID de la oferta aplicada, o null si no tiene (número o null)
  */
 
 return [
-    // Producto 1: Camiseta Básica Blanca
+    // PRODUCTOS CATEGORÍA 1: Camisetas Básicas
+    
     1 => [
         'id' => 1,
-        'name' => 'Camiseta Básica Blanca - 100% Algodón',
-        'description' => 'Camiseta lisa de algodón puro, perfecta para serigrafía y estampación. Ajuste clásico y cómodo. Ideal para personalizaciones corporativas.',
+        'name' => 'Camiseta Básica Blanca',
+        'description' => 'Camiseta 100% algodón, corte clásico. Ideal para uniforme corporativo básico. Colores: Blanco',
         'price' => 8.50,
         'category_id' => 1,
-        'offer_id' => 1,  // Tiene la oferta de Descuento por Volumen
-        'stock' => 350,
-        'material' => 'Algodón 100% (180 g/m²)',
-        'sizes_available' => ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+        'offer_id' => 1  // Descuento por Volumen: 20%
     ],
 
-    // Producto 2: Camiseta Premium Azul
     2 => [
         'id' => 2,
-        'name' => 'Camiseta Premium Azul Marino - Tejido Superior',
-        'description' => 'Camiseta premium con acabado de lujo. Tejido de alta densidad que proporciona durabilidad y comodidad superior. Perfecta para marcas exclusivas.',
-        'price' => 14.99,
-        'category_id' => 2,
-        'offer_id' => null,  // Sin oferta actualmente
-        'stock' => 120,
-        'material' => 'Algodón/Poliéster (200 g/m²)',
-        'sizes_available' => ['S', 'M', 'L', 'XL', 'XXL']
-    ],
-
-    // Producto 3: Camiseta Deportiva Roja
-    3 => [
-        'id' => 3,
-        'name' => 'Camiseta Deportiva Roja - Tecnología Transpirable',
-        'description' => 'Camiseta técnica especialmente diseñada para actividades deportivas. Tela con tecnología de transpiración rápida y absorción de humedad. Ideal para equipos deportivos.',
-        'price' => 12.50,
-        'category_id' => 3,
-        'offer_id' => 3,  // Tiene la oferta de Promoción de Verano
-        'stock' => 280,
-        'material' => 'Poliéster reciclado 100% (150 g/m²)',
-        'sizes_available' => ['XS', 'S', 'M', 'L', 'XL', 'XXL']
-    ],
-
-    // Producto 4: Camiseta Corporativa Negra
-    4 => [
-        'id' => 4,
-        'name' => 'Camiseta Corporativa Negra - Uniformes Empresariales',
-        'description' => 'Camiseta perfecta para uniformes y branding corporativo. Ofrece una imagen profesional y está disponible en grandes volúmenes. Compatibilidad total con bordado y estampación.',
-        'price' => 9.99,
-        'category_id' => 4,
-        'offer_id' => 2,  // Tiene la oferta Corporativa
-        'stock' => 500,
-        'material' => 'Algodón/Poliéster (190 g/m²)',
-        'sizes_available' => ['S', 'M', 'L', 'XL', 'XXL']
-    ],
-
-    // Producto 5: Camiseta Especial Gris Melange
-    5 => [
-        'id' => 5,
-        'name' => 'Camiseta Especial Gris Melange - Edición Limitada',
-        'description' => 'Camiseta de edición limitada con tonalidad gris melange única. Perfecta para colecciones exclusivas y colaboraciones especiales. Stock limitado.',
-        'price' => 11.75,
-        'category_id' => 5,
-        'offer_id' => 5,  // Tiene la oferta de Liquidación
-        'stock' => 45,
-        'material' => 'Algodón melange (185 g/m²)',
-        'sizes_available' => ['M', 'L', 'XL']
-    ],
-
-    // Producto 6: Camiseta Básica Gris
-    6 => [
-        'id' => 6,
-        'name' => 'Camiseta Básica Gris - 100% Algodón',
-        'description' => 'Camiseta lisa en gris, hermana de la blanca. Versátil y cómoda, ideal para cualquier tipo de personalización. Calidad estándar pero confiable.',
+        'name' => 'Camiseta Básica Negra',
+        'description' => 'Camiseta 100% algodón, corte clásico. Ideal para uniforme corporativo básico. Colores: Negro',
         'price' => 8.50,
         'category_id' => 1,
-        'offer_id' => 1,  // Tiene la oferta de Descuento por Volumen
-        'stock' => 320,
-        'material' => 'Algodón 100% (180 g/m²)',
-        'sizes_available' => ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+        'offer_id' => 2  // Promoción Inicio de Año: 15%
     ],
 
-    // Producto 7: Camiseta Premium Verde Oliva
+    3 => [
+        'id' => 3,
+        'name' => 'Camiseta Básica Azul',
+        'description' => 'Camiseta 100% algodón, corte clásico. Ideal para uniforme corporativo básico. Colores: Azul',
+        'price' => 8.50,
+        'category_id' => 1,
+        'offer_id' => null  // Sin oferta
+    ],
+
+    // PRODUCTOS CATEGORÍA 2: Camisetas Personalizadas
+    
+    4 => [
+        'id' => 4,
+        'name' => 'Camiseta Serigrafía Logo Empresa',
+        'description' => 'Camiseta personalizada con técnica de serigrafía. Incluye diseño de logo de empresa. Colores variados',
+        'price' => 15.99,
+        'category_id' => 2,
+        'offer_id' => 3  // Pack de Eventos: 25%
+    ],
+
+    5 => [
+        'id' => 5,
+        'name' => 'Camiseta DTG Diseño Completo',
+        'description' => 'Camiseta personalizada con técnica DTG (Direct-to-Garment). Permite diseños complejos y a todo color',
+        'price' => 18.50,
+        'category_id' => 2,
+        'offer_id' => null  // Sin oferta
+    ],
+
+    6 => [
+        'id' => 6,
+        'name' => 'Camiseta Vinilo Número o Nombre',
+        'description' => 'Camiseta con números o nombres en vinilo. Perfecta para equipos deportivos. Colores personalizables',
+        'price' => 12.75,
+        'category_id' => 2,
+        'offer_id' => 5  // Descuento Cliente Recurrente: 12%
+    ],
+
+    // PRODUCTOS CATEGORÍA 3: Uniformes Corporativos
+    
     7 => [
         'id' => 7,
-        'name' => 'Camiseta Premium Verde Oliva - Tejido Superior',
-        'description' => 'Camiseta premium en color verde oliva exclusivo. Tejido de primera calidad con toque suave al tacto. Ideal para colaboraciones con marcas de lujo.',
-        'price' => 14.99,
-        'category_id' => 2,
-        'offer_id' => 4,  // Tiene la oferta de Bienvenida
-        'stock' => 95,
-        'material' => 'Algodón/Poliéster (200 g/m²)',
-        'sizes_available' => ['S', 'M', 'L', 'XL', 'XXL']
+        'name' => 'Uniforme Corporativo Completo',
+        'description' => 'Uniforme corporativo completo (camiseta + pantalón) con logo bordado. Colores corporativos',
+        'price' => 45.00,
+        'category_id' => 3,
+        'offer_id' => 3  // Pack de Eventos: 25%
     ],
 
-    // Producto 8: Camiseta Deportiva Blanca
     8 => [
         'id' => 8,
-        'name' => 'Camiseta Deportiva Blanca - Tecnología Transpirable',
-        'description' => 'Camiseta técnica en blanco para máxima versatilidad. Tela de alto rendimiento perfecta para equipos deportivos, entrenamiento y eventos.',
-        'price' => 12.50,
+        'name' => 'Chaleco Corporativo con Logo',
+        'description' => 'Chaleco corporativo con logo bordado. Disponible en varios colores. Tallas: XS a XXL',
+        'price' => 28.50,
         'category_id' => 3,
-        'offer_id' => null,  // Sin oferta
-        'stock' => 245,
-        'material' => 'Poliéster reciclado 100% (150 g/m²)',
-        'sizes_available' => ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+        'offer_id' => null  // Sin oferta
     ],
 
-    // Producto 9: Camiseta Corporativa Azul
+    // PRODUCTOS CATEGORÍA 4: Prendas Deportivas
+    
     9 => [
         'id' => 9,
-        'name' => 'Camiseta Corporativa Azul - Uniformes Empresariales',
-        'description' => 'Camiseta corporativa en azul profesional. Mantiene la calidad y versatilidad de nuestra línea corporativa. Disponible para grandes volúmenes.',
-        'price' => 9.99,
+        'name' => 'Camiseta Deportiva Técnica',
+        'description' => 'Camiseta deportiva con tejido técnico anti-sudoración. Disponible con números y nombres en vinilo',
+        'price' => 16.99,
         'category_id' => 4,
-        'offer_id' => 2,  // Tiene la oferta Corporativa
-        'stock' => 480,
-        'material' => 'Algodón/Poliéster (190 g/m²)',
-        'sizes_available' => ['S', 'M', 'L', 'XL', 'XXL']
+        'offer_id' => 4  // Ofertas Estacionales: 10%
     ],
 
-    // Producto 10: Camiseta Especial Borgoña
     10 => [
         'id' => 10,
-        'name' => 'Camiseta Especial Borgoña - Edición Limitada',
-        'description' => 'Camiseta de edición especial en elegante color borgoña. Acabado premium con cantidad limitada. Perfecta para eventos y ediciones coleccionables.',
-        'price' => 11.75,
+        'name' => 'Conjunto de Uniforme Deportivo',
+        'description' => 'Conjunto completo de uniforme deportivo (camiseta + pantalón corto) con números personalizados',
+        'price' => 35.50,
+        'category_id' => 4,
+        'offer_id' => 1  // Descuento por Volumen: 20%
+    ],
+
+    // PRODUCTOS CATEGORÍA 5: Prendas de Temporada
+    
+    11 => [
+        'id' => 11,
+        'name' => 'Camiseta Verano Colores Vibrantes',
+        'description' => 'Camiseta especial verano con colores vibrantes y diseños frescos. 100% algodón',
+        'price' => 11.99,
         'category_id' => 5,
-        'offer_id' => null,  // Sin oferta
-        'stock' => 60,
-        'material' => 'Algodón 100% (185 g/m²)',
-        'sizes_available' => ['M', 'L', 'XL']
-    ]
+        'offer_id' => 4  // Ofertas Estacionales: 10%
+    ],
+
+    12 => [
+        'id' => 12,
+        'name' => 'Camiseta Invierno Térmico',
+        'description' => 'Camiseta térmica para invierno con aislamiento de calor. Disponible en colores oscuros',
+        'price' => 19.99,
+        'category_id' => 5,
+        'offer_id' => 2  // Promoción Inicio de Año: 15%
+    ],
 ];

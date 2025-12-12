@@ -9,45 +9,41 @@ use Illuminate\View\Component;
 /**
  * COMPONENTE: ProductCard
  * 
- * PROPÓSITO: Mostrar una tarjeta de producto reutilizable
+ * DESCRIPCIÓN:
+ * Este componente muestra una tarjeta visual de un producto.
+ * Es reutilizable en cualquier lugar donde queramos mostrar un producto.
  * 
- * PROPS ESPERADOS:
- *   - $product: Array con datos del producto (id, name, price, final_price, offer, etc.)
- *   - $class: (opcional) Clases CSS adicionales
+ * PROPIEDADES (props):
+ * - $product: Array con los datos del producto
+ * - $class: String con clases CSS adicionales personalizadas
  * 
- * RENDERIZADO:
- *   <x-product-card :product="$product" />
- * 
- * CARACTERÍSTICAS:
- *   - Muestra nombre y descripción
- *   - Destacado visual si tiene oferta (borde naranja)
- *   - Badge con porcentaje de descuento en esquina superior derecha
- *   - Precio original tachado si tiene oferta
- *   - Precio final en grande
- *   - Enlace "Ver Detalles"
+ * USO:
+ * <x-product-card :product="$product" class="custom-class" />
  */
+
 class ProductCard extends Component
 {
-    public array $product;
-    public string $class;
-    
     /**
-     * CONSTRUCTOR
-     * 
-     * Se ejecuta cuando se crea el componente
-     * Recibe los props pasados desde la vista
+     * Datos del producto a mostrar
      */
-    public function __construct(array $product = [], string $class = '')
+    public array $product;
+
+    /**
+     * Clases CSS adicionales personalizadas
+     */
+    public string $class;
+
+    /**
+     * Constructor - Recibe los parámetros del componente
+     */
+    public function __construct(array $product, string $class = '')
     {
         $this->product = $product;
         $this->class = $class;
     }
 
     /**
-     * MÉTODO: render()
-     * 
-     * Indica qué vista usar para renderizar este componente
-     * Devuelve: resources/views/components/product-card.blade.php
+     * Renderiza la vista del componente
      */
     public function render(): View|Closure|string
     {
