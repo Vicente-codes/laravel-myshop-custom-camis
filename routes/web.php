@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 
 /**
  * ARCHIVO: routes/web.php
@@ -89,4 +90,4 @@ Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update')
 // URL: http://localhost/contact
 // Método: GET
 // Descripción: Página de contacto (mostrará "En construcción" por ahora)
-Route::view('contact', 'contact')->name('contact');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');

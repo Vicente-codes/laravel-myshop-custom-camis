@@ -2,70 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\LoadsMockData;
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\View\View;
-
-/**
- * CONTROLADOR: WelcomeController
- * 
- * RESPONSABILIDAD:
- * Este controlador gestiona la página de inicio (bienvenida) de la tienda.
- * Su tarea es:
- * 1. Cargar los datos de productos y categorías
- * 2. Procesar/enriquecer los datos (aplicar ofertas, etc)
- * 3. Seleccionar los datos destacados
- * 4. Pasar esos datos a la vista welcome.blade.php
- * 
- * RUTAS:
- * - GET / => WelcomeController@index (página de inicio)
- */
+use Illuminate\Http\Request; // ← Añadido según la práctica 3
 
 class WelcomeController extends Controller
 {
-    // Importamos el trait para acceso a métodos de datos mock
-    use LoadsMockData;
+    /**
+     * CONTROLADOR: WelcomeController
+     * 
+     * Gestiona la página de inicio (welcome) de la tienda.
+     * Muestra productos y categorías destacadas.
+     * 
+     * CAMBIOS vs PUD2:
+     * - ❌ Eliminado: use App\Traits\LoadsMockData
+     * - ✅ Añadido: use App\Models\Product, use App\Models\Category
+     * - ✅ Reemplazado: $this->getProducts() → Product::with(...)->get()
+     * - ✅ Eliminado: $this->enrichProductsWithOffers() (Eloquent lo hace)
+     */
 
     /**
-     * MÉTODO: index()
+     * INDEX: Página de inicio con contenido destacado
      * 
-     * DESCRIPCIÓN:
-     * Muestra la página de inicio con contenido destacado.
+     * Ruta: GET /
+     * Vista: resources/views/welcome.blade.php
      * 
-     * PASOS QUE REALIZA:
-     * 1. Carga todos los productos desde el mock
-     * 2. Enriquece los productos con datos de ofertas y precios finales
-     * 3. Selecciona los primeros 3 productos para destacar
-     * 4. Carga todas las categorías
-     * 5. Selecciona las primeras 4 categorías para destacar
-     * 6. Retorna la vista welcome con los datos destacados
+     * OBJETIVO:
+     * Mostrar en la página principal:
+     * - Primeros 3 productos con oferta activa (para destacar)
+     * - Primeras 4 categorías (para navegar)
      * 
-     * RETORNA: Vista welcome.blade.php con datos de:
-     * - $featuredProducts: array con los 3 primeros productos
-     * - $featuredCategories: array con las 4 primeras categorías
+     * PASOS:
+     * 1. Obtener primeros 3 productos con oferta
+     * 2. Obtener primeras 4 categorías
+     * 3. Pasar ambos a la vista
      */
     public function index(): View
     {
-        // PASO 1: Cargar todos los productos
-        $products = $this->getProducts();
+        /**
+         * PRODUCTOS DESTACADOS
+         * 
+         * whereNotNull('offer_id') → Solo productos con oferta
+         * take(3) → Tomar solo los primeros 3
+         * get() → Ejecutar la consulta y retornar colección
+         * 
+         * Consulta SQL generada:
+         * SELECT * FROM products
+         * WHERE offer_id IS NOT NULL
+         * LIMIT 3;
+         * 
+         * Con eager loading:
+         * - with('category', 'offer') carga relaciones sin problema N+1
+         */
+        $featuredProducts = Product::with(['category', 'offer'])
+                                   ->whereNotNull('offer_id')
+                                   ->take(3)
+                                   ->get();
 
-        // PASO 2: Enriquecer productos con ofertas y precios finales
-        // Esto añade a cada producto: 'offer' y 'final_price'
-        $enrichedProducts = $this->enrichProductsWithOffers($products);
+        /**
+         * CATEGORÍAS DESTACADAS
+         * 
+         * take(4) → Tomar solo las primeras 4 categorías
+         * get() → Ejecutar la consulta
+         * 
+         * Consulta SQL generada:
+         * SELECT * FROM categories
+         * LIMIT 4;
+         */
+        $featuredCategories = Category::take(4)->get();
 
-        // PASO 3: Seleccionar los primeros 3 productos para destacar
-        // array_slice(array, offset, length, preserve_keys)
-        // offset=0: empezar desde el inicio
-        // length=3: tomar 3 elementos
-        // true: mantener las claves numéricas
-        $featuredProducts = array_slice($enrichedProducts, 0, 3, true);
-
-        // PASO 4: Cargar todas las categorías
-        $categories = $this->getCategories();
-
-        // PASO 5: Seleccionar las primeras 4 categorías
-        $featuredCategories = array_slice($categories, 0, 4, true);
-
-        // PASO 6: Retornar la vista welcome con los datos
+        // Pasar datos a la vista
         return view('welcome', compact('featuredProducts', 'featuredCategories'));
     }
 }

@@ -2,109 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\LoadsMockData;
-use Illuminate\Http\RedirectResponse;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
-
-/**
- * CONTROLADOR: CartController
- * 
- * RESPONSABILIDAD:
- * Gestiona operaciones relacionadas con el carrito de compras.
- * 
- * MÉTODOS:
- * - index: Mostrar el contenido actual del carrito
- * - store: Añadir un producto al carrito (simulado)
- * - update: Actualizar cantidad de producto en carrito (simulado)
- * 
- * RUTAS:
- * - GET /cart => CartController@index (ver carrito)
- * - POST /cart => CartController@store (añadir producto)
- * - PUT /cart/{id} => CartController@update (actualizar cantidad)
- */
 
 class CartController extends Controller
 {
-    // Importamos el trait para acceso a métodos de datos mock
-    use LoadsMockData;
-
     /**
-     * MÉTODO: index()
-     * 
-     * DESCRIPCIÓN:
-     * Muestra el contenido actual del carrito de compras del usuario.
-     * Muestra cada producto con su nombre, precio y cantidad.
-     * 
-     * PASOS:
-     * 1. Carga el carrito actual (items del carrito)
-     * 2. Carga todos los productos para obtener sus nombres y precios
-     * 3. Enriquece cada item del carrito con:
-     *    - Nombre del producto
-     *    - Precio del producto
-     * 4. Retorna la vista cart.index con los items del carrito
-     * 
-     * RETORNA: Vista cart/index.blade.php con:
-     * - $cartItems: array con items del carrito (enriquecidos con nombre y precio)
+     * INDEX: Mostrar el carrito del usuario actual
+     *
+     * En P3 no hay autenticación real, así que usamos el usuario 1.
+     * En P4 se reemplazará por auth()->user().
      */
     public function index(): View
     {
-        // PASO 1: Cargar el carrito actual
-        $cart = $this->getCart();
+        // Usuario por defecto (Usuario Demo)
+        $user = User::find(1);
 
-        // PASO 2: Cargar todos los productos
-        $products = $this->getProducts();
+        /**
+         * OBTENER PRODUCTOS DEL CARRITO
+         *
+         * Usamos:
+         *     $user->products()->with('category', 'offer')->get();
+         * en lugar de $user->products por dos motivos:
+         *
+         * 1. Eficiencia (Eager Loading)
+         *    - Cargamos categoría y oferta en la misma consulta.
+         *    - Evita el problema N+1 y reduce el número total de consultas.
+         *
+         * 2. Flexibilidad
+         *    - Al usar el query builder de la relación (products()), podemos añadir
+         *      filtros, ordenaciones o paginación en el futuro sin modificar el modelo.
+         *
+         * En resumen:
+         * - Por qué: optimiza rendimiento y evita consultas innecesarias.
+         * - Para qué: preparar un carrito más eficiente y escalable.
+         */
 
-        // PASO 3: Enriquecer cada item del carrito
-        // Añadimos nombre y precio del producto a cada item
-        $cartWithProducts = [];
-        foreach ($cart as $item) {
-            // Obtener el producto para este item
-            $product = $products[$item['product_id']] ?? null;
+        $cartProducts = $user->products()
+                             ->with('category', 'offer')
+                             ->get();
 
-            // Crear item enriquecido con datos del producto
-            $cartWithProducts[] = array_merge(
-                $item,
-                [
-                    'name' => $product ? $product['name'] : 'Producto no encontrado',
-                    'price' => $product ? $product['price'] : 0,
-                ]
-            );
-        }
-
-        // PASO 4: Retornar la vista con items del carrito
-        return view('cart.index', ['cartItems' => $cartWithProducts]);
+        return view('cart.index', compact('cartProducts'));
     }
 
     /**
-     * MÉTODO: store()
-     * 
-     * DESCRIPCIÓN:
-     * Añade un nuevo producto al carrito.
-     * 
-     * POR AHORA: Solo simulamos que se añadió el producto.
-     * Más tarde se implementará la lógica real con sesiones.
+     * STORE: Añadir un producto al carrito
+     *
+     * En esta práctica se simula.
      */
     public function store(Request $request): RedirectResponse
     {
-        return redirect()
-            ->route('cart.index')
-            ->with('success', 'Producto añadido al carrito exitosamente');
+        return redirect()->route('cart.index')
+                         ->with('success', 'Producto añadido al carrito exitosamente');
     }
 
     /**
-     * MÉTODO: update()
-     * 
-     * DESCRIPCIÓN:
-     * Actualiza la cantidad de un producto en el carrito.
-     * 
-     * POR AHORA: Solo simulamos que se actualizó la cantidad.
-     * Más tarde se implementará la lógica real con sesiones.
+     * UPDATE: Actualizar la cantidad de un producto en el carrito
+     *
+     * En esta práctica se simula.
      */
     public function update(Request $request, string $id): RedirectResponse
     {
-        return redirect()
-            ->route('cart.index')
-            ->with('success', 'Cantidad actualizada exitosamente');
+        return redirect()->route('cart.index')
+                         ->with('success', 'Cantidad actualizada exitosamente');
     }
 }
