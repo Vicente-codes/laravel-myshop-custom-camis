@@ -7,16 +7,16 @@
 
     <!-- Nombre de la Categoría -->
     <h4 class="text-xl font-bold mb-2 text-gray-900">
-        {{ $category['name'] }}
+        {{ $category->name }}
     </h4>
 
     <!-- Descripción -->
     <p class="text-gray-600 mb-4">
-        {{ $category['description'] }}
+        {{ $category->description }}
     </p>
 
     <!-- Botón Ver Productos -->
-    <a href="{{ route('categories.show', $category['id']) }}"
+    <a href="{{ route('categories.show', $category->id) }}"
        class="text-primary-600 font-semibold hover:text-primary-700 transition">
         Ver Productos →
     </a>
