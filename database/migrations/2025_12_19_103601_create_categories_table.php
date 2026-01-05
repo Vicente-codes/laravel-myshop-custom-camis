@@ -23,7 +23,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            // ID: Clave primaria auto-incremental
+            // ID: Laravel le asigna una clave primaria y auto-incremental
             $table->id();
             
             // name: Nombre de la categoría (máximo 255 caracteres)
