@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Offer;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
@@ -28,32 +29,66 @@ class ProductController extends Controller
     {
         // Solo productos con offer_id no nulo
         $products = Product::with(['category', 'offer'])
-                           ->whereNotNull('offer_id')
-                           ->get();
+            ->whereNotNull('offer_id')
+            ->get();
 
         return view('products.index', compact('products'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Muestra el formulario para crear un nuevo producto.
      */
-    public function create()
+    public function create(): View
     {
-        // En una app real: devolver formulario con categorías y ofertas
-        // Aquí solo redirigimos como indica la práctica
-        return redirect()->route('products.index')
-                         ->with('success', 'Formulario de creación simulado');
+        // Cargar todas las categorías y ofertas para los selectores del formulario
+        $categories = Category::all();
+        $offers = Offer::all();
+
+        return view('admin.products.create', compact('categories', 'offers'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacena un nuevo producto en la base de datos.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        // En una app real: validar y guardar
-        // Aquí solo redirigimos como indica la práctica
-        return redirect()->route('products.index')
-                         ->with('success', 'Producto creado exitosamente');
+        // PASO 1: Validar todos los datos del formulario, incluyendo la imagen
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:products,name',
+            'description' => 'required|string|max:1000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'price' => 'required|numeric|min:0|max:999999.99',
+            'category_id' => 'required|exists:categories,id',
+            'offer_id' => 'nullable|exists:offers,id',
+        ], [
+            'name.required' => 'El nombre del producto es obligatorio.',
+            'name.unique' => 'Ya existe un producto con ese nombre.',
+            'description.required' => 'La descripción es obligatoria.',
+            'image.image' => 'El archivo debe ser una imagen.',
+            'image.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, webp.',
+            'image.max' => 'La imagen no debe superar los 2MB.',
+            'price.required' => 'El precio es obligatorio.',
+            'price.numeric' => 'El precio debe ser un número.',
+            'category_id.required' => 'Debes seleccionar una categoría.',
+            'category_id.exists' => 'La categoría seleccionada no es válida.',
+            'offer_id.exists' => 'La oferta seleccionada no es válida.',
+        ]);
+
+        // PASO 2: Procesar la imagen si fue subida
+        if ($request->hasFile('image')) {
+            // Guardar en el disco 'public' dentro de la carpeta 'products'
+            // Laravel genera automáticamente un nombre único para evitar colisiones
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image'] = $imagePath;
+        }
+
+        // PASO 3: Crear el producto con los datos validados
+        Product::create($validated);
+
+        // PASO 4: Redirigir con mensaje de éxito
+        return redirect()
+            ->route('admin.products.index')
+            ->with('success', '¡Producto creado exitosamente!');
     }
 
     /**
@@ -86,7 +121,7 @@ class ProductController extends Controller
         // En una app real: devolver formulario con datos del producto
         // Aquí solo redirigimos como indica la práctica
         return redirect()->route('products.show', $id)
-                         ->with('success', 'Producto editado');
+            ->with('success', 'Producto editado');
     }
 
     /**
@@ -97,7 +132,7 @@ class ProductController extends Controller
         // En una app real: validar y actualizar
         // Aquí solo redirigimos como indica la práctica
         return redirect()->route('products.show', $id)
-                         ->with('success', 'Producto actualizado exitosamente');
+            ->with('success', 'Producto actualizado exitosamente');
     }
 
     /**
@@ -108,6 +143,15 @@ class ProductController extends Controller
         // En una app real: eliminar el producto
         // Aquí solo redirigimos como indica la práctica
         return redirect()->route('products.index')
-                         ->with('success', 'Producto eliminado exitosamente');
+            ->with('success', 'Producto eliminado exitosamente');
+    }
+
+    /**
+     * Muestra la lista de productos en el panel de administración.
+     */
+    public function adminIndex(): View
+    {
+        $products = Product::with(['category', 'offer'])->latest()->get();
+        return view('admin.products.index', compact('products'));
     }
 }

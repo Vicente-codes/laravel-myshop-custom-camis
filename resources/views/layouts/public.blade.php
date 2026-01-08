@@ -4,15 +4,18 @@
     @include('partials.head')
 </head>
 <body class="bg-gray-50">
-    <!-- Header con navegación -->
+    <!-- Header usando partial -->
     @include('partials.header')
 
+    <!-- Notificaciones Flash -->
+    @include('partials.flash-messages')
+    
     <!-- Contenido principal -->
     <main class="min-h-screen">
         @yield('content')
     </main>
-
-    <!-- Footer -->
+    
+    <!-- Footer usando partial -->
     @include('partials.footer')
 
     @stack('scripts')
