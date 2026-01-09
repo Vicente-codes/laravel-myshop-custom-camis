@@ -2,70 +2,98 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
 
 class CartController extends Controller
 {
     /**
-     * INDEX: Mostrar el carrito del usuario actual
-     *
-     * En P3 no hay autenticación real, así que usamos el usuario 1.
-     * En P4 se reemplazará por auth()->user().
+     * Muestra la vista del carrito de compras con los datos de la sesión.
      */
     public function index(): View
     {
-        // Usuario por defecto (Usuario Demo)
-        $user = User::find(1);
+        $cart = session()->get('cart', []);
 
-        /**
-         * OBTENER PRODUCTOS DEL CARRITO
-         *
-         * Usamos:
-         *     $user->products()->with('category', 'offer')->get();
-         * en lugar de $user->products por dos motivos:
-         *
-         * 1. Eficiencia (Eager Loading)
-         *    - Cargamos categoría y oferta en la misma consulta.
-         *    - Evita el problema N+1 y reduce el número total de consultas.
-         *
-         * 2. Flexibilidad
-         *    - Al usar el query builder de la relación (products()), podemos añadir
-         *      filtros, ordenaciones o paginación en el futuro sin modificar el modelo.
-         *
-         * En resumen:
-         * - Por qué: optimiza rendimiento y evita consultas innecesarias.
-         * - Para qué: preparar un carrito más eficiente y escalable.
-         */
+        // Obtenemos los IDs de los productos del carrito
+        $productIds = array_keys($cart);
 
-        $cartProducts = $user->products()
-                             ->with('category', 'offer')
-                             ->get();
+        // Cargamos los modelos de producto con sus relaciones
+        $cartProducts = Product::with(['category', 'offer'])->find($productIds);
 
-        return view('cart.index', compact('cartProducts'));
+        // Añadimos la cantidad a cada producto para usarla en la vista
+        $cartProducts = $cartProducts->map(function ($product) use ($cart) {
+            $product->quantity = $cart[$product->id]['quantity'];
+            return $product;
+        });
+
+        return view('cart.index', [
+            'cartProducts' => $cartProducts
+        ]);
     }
 
     /**
-     * STORE: Añadir un producto al carrito
-     *
-     * En esta práctica se simula.
+     * Añade un producto al carrito de compras en la sesión.
      */
     public function store(Request $request): RedirectResponse
     {
-        return redirect()->route('cart.index')
-                         ->with('success', 'Producto añadido al carrito exitosamente');
+        $request->validate(['product_id' => 'required|exists:products,id']);
+        $productId = $request->input('product_id');
+        
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$productId])) {
+            $cart[$productId]['quantity']++;
+        } else {
+            $cart[$productId] = ["quantity" => 1];
+        }
+
+        session()->put('cart', $cart);
+        return redirect()->back()->with('success', '¡Producto añadido al carrito!');
     }
 
     /**
-     * UPDATE: Actualizar la cantidad de un producto en el carrito
-     *
-     * En esta práctica se simula.
+     * Actualiza la cantidad de un producto en el carrito.
      */
     public function update(Request $request, string $id): RedirectResponse
     {
-        return redirect()->route('cart.index')
-                         ->with('success', 'Cantidad actualizada exitosamente');
+        $request->validate(['quantity' => 'required|integer|min:1']);
+        
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] = $request->input('quantity');
+            session()->put('cart', $cart);
+            return redirect()->route('cart.index')->with('success', 'Cantidad actualizada correctamente.');
+        }
+
+        return redirect()->route('cart.index')->with('error', 'El producto no se encontró en el carrito.');
+    }
+
+    /**
+     * Elimina un producto del carrito de compras.
+     */
+    public function destroy(string $id): RedirectResponse
+    {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            unset($cart[$id]); // Elimina el elemento del array
+            session()->put('cart', $cart);
+            return redirect()->route('cart.index')->with('success', 'Producto eliminado del carrito.');
+        }
+
+        return redirect()->route('cart.index')->with('error', 'El producto no se encontró en el carrito.');
+    }
+    
+    /**
+     * Simula la finalización de la compra, vaciando el carrito.
+     */
+    public function checkout(): RedirectResponse
+    {
+        session()->forget('cart'); // Vacía el carrito de la sesión
+        return redirect()->route('welcome')->with('success', '¡Pedido realizado con éxito! Gracias por tu compra.');
     }
 }

@@ -37,7 +37,7 @@
                                                  class="h-16 w-16 object-cover rounded-md shadow-sm">
                                         @else
                                             <div class="h-16 w-16 bg-gray-100 flex items-center justify-center rounded-md text-4xl">
-                                                📦
+                                                👕
                                             </div>
                                         @endif
                                     </td>
