@@ -8,8 +8,14 @@
 
             <!-- Imagen del Producto -->
             <div class="bg-white rounded-lg shadow-lg p-6">
-                <div class="h-96 bg-gray-200 flex items-center justify-center">
-                    <span class="text-8xl">👕</span>
+                <div class="h-96 bg-gray-200 flex items-center justify-center overflow-hidden">
+                    @if(!empty($product->image))
+                        <img src="{{ asset('storage/' . $product->image) }}" 
+                             alt="{{ $product->name }}" 
+                             class="w-full h-full object-cover">
+                    @else
+                        <span class="text-8xl">👕</span>
+                    @endif
                 </div>
             </div>
 
