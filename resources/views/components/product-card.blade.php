@@ -17,7 +17,7 @@
 
     <div class="h-48 bg-gray-200 flex items-center justify-center overflow-hidden {{ $product->offer ? 'bg-gradient-to-br from-orange-50 to-red-50' : '' }}">
         @if(!empty($product->image))
-            <img src="{{ asset('storage/' . $product->image) }}" 
+            <img src="{{ Str::contains($product->image, '/') ? asset('storage/' . $product->image) : asset('images/' . $product->image) }}" 
                  alt="{{ $product->name }}" 
                  class="w-full h-full object-cover">
         @else

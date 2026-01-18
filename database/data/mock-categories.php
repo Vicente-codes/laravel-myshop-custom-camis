@@ -21,7 +21,8 @@ return [
         'id' => 1,
         'name' => 'Camisetas Básicas',
         'slug' => 'camisetas-basicas',
-        'description' => 'Camisetas de alta calidad en colores sólidos, ideales para eventos corporativos y uniforme básico'
+        'description' => 'Camisetas de alta calidad en colores sólidos, ideales para eventos corporativos y uniforme básico',
+        'image' => 'camisetas-basicas.jpg'
     ],
 
     // CATEGORÍA 2: Camisetas Personalizadas
@@ -30,7 +31,8 @@ return [
         'id' => 2,
         'name' => 'Camisetas Personalizadas',
         'slug' => 'camisetas-personalizadas',
-        'description' => 'Camisetas con diseños, logos y textos personalizados. Disponibles en serigrafía, DTG y vinilo'
+        'description' => 'Camisetas con diseños, logos y textos personalizados. Disponibles en serigrafía, DTG y vinilo',
+        'image' => 'camisetas-personalizadas.jpg'
     ],
 
     // CATEGORÍA 3: Uniformes Corporativos
@@ -39,7 +41,8 @@ return [
         'id' => 3,
         'name' => 'Uniformes Corporativos',
         'slug' => 'uniformes-corporativos',
-        'description' => 'Uniformes completos para empresas, con logo bordado o impreso'
+        'description' => 'Uniformes completos para empresas, con logo bordado o impreso',
+        'image' => 'uniformes-corporativos.jpg'
     ],
 
     // CATEGORÍA 4: Prendas Deportivas
@@ -48,7 +51,8 @@ return [
         'id' => 4,
         'name' => 'Prendas Deportivas',
         'slug' => 'prendas-deportivas',
-        'description' => 'Equipos deportivos y prendas técnicas para equipos y eventos'
+        'description' => 'Equipos deportivos y prendas técnicas para equipos y eventos',
+        'image' => 'prendas-deportivas.jpg'
     ],
 
     // CATEGORÍA 5: Prendas de Temporada
@@ -57,6 +61,7 @@ return [
         'id' => 5,
         'name' => 'Prendas de Temporada',
         'slug' => 'prendas-temporada',
-        'description' => 'Colecciones especiales por temporada, eventos y campañas promocionales'
+        'description' => 'Colecciones especiales por temporada, eventos y campañas promocionales',
+        'image' => 'prendas-temporada.jpg'
     ],
 ];

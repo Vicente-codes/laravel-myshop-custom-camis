@@ -5,7 +5,9 @@
 @push('styles')
     <style>
         .hero-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ asset('images/slider-camis.png') }}?v={{ time() }}');
+            background-size: cover;
+            background-position: center;
         }
     </style>
 @endpush

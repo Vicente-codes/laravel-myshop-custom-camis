@@ -24,7 +24,8 @@ return [
         'description' => 'Camiseta 100% algodón, corte clásico. Ideal para uniforme corporativo básico. Colores: Blanco',
         'price' => 8.50,
         'category_id' => 1,
-        'offer_id' => 1  // Descuento por Volumen: 20%
+        'offer_id' => 1,
+        'image' => 'camisetas-basicas.jpg'
     ],
 
     2 => [
@@ -33,7 +34,8 @@ return [
         'description' => 'Camiseta 100% algodón, corte clásico. Ideal para uniforme corporativo básico. Colores: Negro',
         'price' => 8.50,
         'category_id' => 1,
-        'offer_id' => 2  // Promoción Inicio de Año: 15%
+        'offer_id' => 2,
+        'image' => 'camisetas-basicas.jpg'
     ],
 
     3 => [
@@ -42,7 +44,8 @@ return [
         'description' => 'Camiseta 100% algodón, corte clásico. Ideal para uniforme corporativo básico. Colores: Azul',
         'price' => 8.50,
         'category_id' => 1,
-        'offer_id' => null  // Sin oferta
+        'offer_id' => null,
+        'image' => 'camisetas-basicas.jpg'
     ],
 
     // PRODUCTOS CATEGORÍA 2: Camisetas Personalizadas
@@ -53,7 +56,8 @@ return [
         'description' => 'Camiseta personalizada con técnica de serigrafía. Incluye diseño de logo de empresa. Colores variados',
         'price' => 15.99,
         'category_id' => 2,
-        'offer_id' => 3  // Pack de Eventos: 25%
+        'offer_id' => 3,
+        'image' => 'camisetas-personalizadas.jpg'
     ],
 
     5 => [
@@ -62,7 +66,8 @@ return [
         'description' => 'Camiseta personalizada con técnica DTG (Direct-to-Garment). Permite diseños complejos y a todo color',
         'price' => 18.50,
         'category_id' => 2,
-        'offer_id' => null  // Sin oferta
+        'offer_id' => null,
+        'image' => 'camisetas-personalizadas.jpg'
     ],
 
     6 => [
@@ -71,7 +76,8 @@ return [
         'description' => 'Camiseta con números o nombres en vinilo. Perfecta para equipos deportivos. Colores personalizables',
         'price' => 12.75,
         'category_id' => 2,
-        'offer_id' => 5  // Descuento Cliente Recurrente: 12%
+        'offer_id' => 5,
+        'image' => 'camisetas-personalizadas.jpg'
     ],
 
     // PRODUCTOS CATEGORÍA 3: Uniformes Corporativos
@@ -82,7 +88,8 @@ return [
         'description' => 'Uniforme corporativo completo (camiseta + pantalón) con logo bordado. Colores corporativos',
         'price' => 45.00,
         'category_id' => 3,
-        'offer_id' => 3  // Pack de Eventos: 25%
+        'offer_id' => 3,
+        'image' => 'uniformes-corporativos.jpg'
     ],
 
     8 => [
@@ -91,7 +98,8 @@ return [
         'description' => 'Chaleco corporativo con logo bordado. Disponible en varios colores. Tallas: XS a XXL',
         'price' => 28.50,
         'category_id' => 3,
-        'offer_id' => null  // Sin oferta
+        'offer_id' => null,
+        'image' => 'uniformes-corporativos.jpg'
     ],
 
     // PRODUCTOS CATEGORÍA 4: Prendas Deportivas
@@ -102,7 +110,8 @@ return [
         'description' => 'Camiseta deportiva con tejido técnico anti-sudoración. Disponible con números y nombres en vinilo',
         'price' => 16.99,
         'category_id' => 4,
-        'offer_id' => 4  // Ofertas Estacionales: 10%
+        'offer_id' => 4,
+        'image' => 'prendas-deportivas.jpg'
     ],
 
     10 => [
@@ -111,7 +120,8 @@ return [
         'description' => 'Conjunto completo de uniforme deportivo (camiseta + pantalón corto) con números personalizados',
         'price' => 35.50,
         'category_id' => 4,
-        'offer_id' => 1  // Descuento por Volumen: 20%
+        'offer_id' => 1,
+        'image' => 'prendas-deportivas.jpg'
     ],
 
     // PRODUCTOS CATEGORÍA 5: Prendas de Temporada
@@ -122,7 +132,8 @@ return [
         'description' => 'Camiseta especial verano con colores vibrantes y diseños frescos. 100% algodón',
         'price' => 11.99,
         'category_id' => 5,
-        'offer_id' => 4  // Ofertas Estacionales: 10%
+        'offer_id' => 4,
+        'image' => 'prendas-temporada.jpg'
     ],
 
     12 => [
@@ -131,6 +142,7 @@ return [
         'description' => 'Camiseta térmica para invierno con aislamiento de calor. Disponible en colores oscuros',
         'price' => 19.99,
         'category_id' => 5,
-        'offer_id' => 2  // Promoción Inicio de Año: 15%
+        'offer_id' => 2,
+        'image' => 'prendas-temporada.jpg'
     ],
 ];
