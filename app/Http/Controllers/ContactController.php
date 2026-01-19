@@ -29,4 +29,32 @@ class ContactController extends Controller
     {
         return view('contact');
     }
+
+    /**
+     * STORE: Procesar el formulario de contacto
+     *
+     * Ruta: POST /contact
+     */
+    public function store(Request $request)
+    {
+        // 1. Validar los datos
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string|min:10',
+        ]);
+
+        // 2. Enviar el correo
+        try {
+            \Illuminate\Support\Facades\Mail::to('admin@customcamis.com')->send(new \App\Mail\ContactFormMail($validated));
+        } catch (\Exception $e) {
+            // En un entorno real, registraríamos el error
+            // Log::error('Error enviando correo de contacto: ' . $e->getMessage());
+            return back()->with('error', 'Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo más tarde.');
+        }
+
+        // 3. Redirigir con mensaje de éxito
+        return back()->with('success', '¡Gracias por contactarnos! Hemos recibido tu mensaje y te responderemos a la brevedad.');
+    }
 }
