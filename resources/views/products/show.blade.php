@@ -83,7 +83,24 @@
                     <form action="{{ route('cart.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <button type="submit" class="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition">
+                        
+                        <!-- Selector de Tallas -->
+                        @if(!empty($product->sizes) && count($product->sizes) > 0)
+                            <div class="mb-4">
+                                <label for="size" class="block text-gray-700 font-bold mb-2">Selecciona tu Talla:</label>
+                                <select name="size" id="size" class="w-full border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500" required>
+                                    <option value="" disabled selected>Elige una opción...</option>
+                                    @foreach($product->sizes as $size)
+                                        <option value="{{ $size }}">{{ $size }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            {{-- Si no hay tallas definidas, enviamos una por defecto o ocultamos el selector --}}
+                             <input type="hidden" name="size" value="U">
+                        @endif
+
+                        <button type="submit" class="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition w-full">
                             🛒 Añadir al Carrito
                         </button>
                     </form>

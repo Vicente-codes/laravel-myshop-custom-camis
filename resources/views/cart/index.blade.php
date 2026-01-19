@@ -50,6 +50,7 @@
                                     <div>
                                         <div class="font-semibold text-gray-900">{{ $product->name }}</div>
                                         <div class="text-sm text-gray-600">{{ $product->category->name }}</div>
+                                        <div class="text-sm text-gray-500">Talla: <span class="font-bold text-gray-800">{{ $product->size }}</span></div>
                                         @if($product->offer)
                                             <span class="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full mt-1">
                                                 🏷️ -{{ $product->offer->discount_percentage }}%
@@ -70,7 +71,8 @@
                             </td>
                             <td class="px-6 py-4">
                                 {{-- FORMULARIO PARA ACTUALIZAR CANTIDAD --}}
-                                <form action="{{ route('cart.update', $product->id) }}" method="POST" class="flex items-center justify-center">
+                                {{-- Usamos $product->cart_id (ej: 12_XL) en lugar de $product->id --}}
+                                <form action="{{ route('cart.update', $product->cart_id) }}" method="POST" class="flex items-center justify-center">
                                     @csrf
                                     @method('PUT')
                                     <input type="number" name="quantity" value="{{ $product->quantity }}" min="1" class="w-20 text-center border-gray-300 rounded-md shadow-sm">
@@ -80,7 +82,7 @@
                             <td class="px-6 py-4 font-semibold text-gray-900">€{{ number_format($subtotal, 2) }}</td>
                             <td class="px-6 py-4 text-center">
                                 {{-- FORMULARIO PARA ELIMINAR --}}
-                                <form action="{{ route('cart.destroy', $product->id) }}" method="POST">
+                                <form action="{{ route('cart.destroy', $product->cart_id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="text-red-600 hover:text-red-800" title="Eliminar producto">🗑️ Eliminar</button>

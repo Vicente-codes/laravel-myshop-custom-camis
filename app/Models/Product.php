@@ -27,6 +27,7 @@ class Product extends Model
         'description',
         'image',   // Añadido desde la nueva propuesta
         'price',
+        'sizes',   // Añadido tamaños
         'category_id',
         'offer_id',
     ];
@@ -39,6 +40,7 @@ class Product extends Model
     {
         return [
             'price' => 'decimal:2',
+            'sizes' => 'array',
         ];
     }
 
