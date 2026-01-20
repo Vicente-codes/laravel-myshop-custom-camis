@@ -27,8 +27,12 @@
     @endauth
     @guest
         <a href="{{ route('login') }}" 
-        class="text-gray-700 hover:text-primary-600 transition {{ request()->routeIs('login') ? 'text-primary-600 font-semibold' : '' }}">
+           class="text-gray-700 hover:text-primary-600 transition {{ request()->routeIs('login') ? 'text-primary-600 font-semibold' : '' }}">
             Login
+        </a>
+        <a href="{{ route('register') }}" 
+           class="text-gray-700 hover:text-primary-600 transition {{ request()->routeIs('register') ? 'text-primary-600 font-semibold' : '' }}">
+            Registrarse
         </a>
     @endguest
 </nav>
