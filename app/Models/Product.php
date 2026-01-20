@@ -53,8 +53,15 @@ class Product extends Model
         return Attribute::make(
             get: function () {
                 if ($this->offer && $this->offer->discount_percentage > 0) {
-                    $discount = $this->price * ($this->offer->discount_percentage / 100);
-                    return round($this->price - $discount, 2);
+                    // Verificamos si la cantidad del producto cumple el mínimo de la oferta
+                    // Usamos $this->quantity (inyectado por CartController) o 1 por defecto
+                    $quantity = $this->quantity ?? 1;
+                    $minQuantity = $this->offer->min_quantity ?? 1;
+
+                    if ($quantity >= $minQuantity) {
+                        $discount = $this->price * ($this->offer->discount_percentage / 100);
+                        return round($this->price - $discount, 2);
+                    }
                 }
                 return $this->price;
             },

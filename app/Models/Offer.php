@@ -31,6 +31,7 @@ class Offer extends Model
         'slug',
         'discount_percentage',
         'description',
+        'min_quantity',
     ];
 
     /**

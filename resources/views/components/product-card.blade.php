@@ -34,6 +34,9 @@
             <div class="mb-4">
                 <span class="inline-block bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full font-semibold">
                     🏷️ {{ $product->offer->name }}
+                    @if($product->offer->min_quantity > 1)
+                        (Mín. {{ $product->offer->min_quantity }} uds)
+                    @endif
                 </span>
             </div>
         @endif
@@ -41,9 +44,24 @@
         <!-- Precio -->
         <div class="mb-4">
             @if($product->offer)
-                <div class="flex items-baseline gap-2">
-                    <span class="text-sm text-gray-400 line-through">€{{ number_format($product->price, 2) }}</span>
-                    <span class="text-2xl font-bold text-orange-600">€{{ number_format($product->final_price, 2) }}</span>
+                @php
+                    // Calculamos el precio POTENCIAL de oferta para mostrarlo visualmente
+                    $discountedPrice = $product->price - ($product->price * ($product->offer->discount_percentage / 100));
+                @endphp
+                
+                <div class="flex flex-col">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-sm text-gray-400 line-through">€{{ number_format($product->price, 2) }}</span>
+                        <span class="text-2xl font-bold text-orange-600">
+                            €{{ number_format($discountedPrice, 2) }}
+                        </span>
+                    </div>
+                    
+                    @if($product->offer->min_quantity > 1)
+                        <span class="text-xs text-orange-600 font-medium mt-1">
+                            * Precio aplicable comprando {{ $product->offer->min_quantity }} o más unidades
+                        </span>
+                    @endif
                 </div>
             @else
                 <span class="text-2xl font-bold text-primary-600">€{{ number_format($product->final_price, 2) }}</span>

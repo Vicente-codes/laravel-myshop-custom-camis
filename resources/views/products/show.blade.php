@@ -35,18 +35,31 @@
                 <!-- Precio -->
                 <div class="mb-6">
                     @if($product->offer)
-                        <div class="flex items-baseline gap-3">
-                            <span class="text-2xl text-gray-400 line-through">
-                                €{{ number_format($product->price, 2) }}
-                            </span>
-                            <span class="text-4xl font-bold text-orange-600">
-                                €{{ number_format($product->final_price, 2) }}
-                            </span>
-                        </div>
+                        @php
+                            // Calculamos el precio POTENCIAL manualmente
+                            $discountedPrice = $product->price - ($product->price * ($product->offer->discount_percentage / 100));
+                        @endphp
 
-                        <p class="text-sm text-orange-600 mt-2">
-                            ¡Ahorra €{{ number_format($product->price - $product->final_price, 2) }}!
-                        </p>
+                        <div class="flex flex-col">
+                            <div class="flex items-baseline gap-3">
+                                <span class="text-2xl text-gray-400 line-through">
+                                    €{{ number_format($product->price, 2) }}
+                                </span>
+                                <span class="text-4xl font-bold text-orange-600">
+                                    €{{ number_format($discountedPrice, 2) }}
+                                </span>
+                            </div>
+
+                            @if($product->offer->min_quantity > 1)
+                                <p class="text-sm text-orange-600 mt-2 font-medium">
+                                    * Precio especial comprando {{ $product->offer->min_quantity }} o más unidades
+                                </p>
+                            @endif
+
+                            <p class="text-sm text-green-600 mt-2">
+                                ¡Ahorras €{{ number_format($product->price - $discountedPrice, 2) }} por unidad!
+                            </p>
+                        </div>
                     @else
                         <span class="text-4xl font-bold text-primary-600">
                             €{{ number_format($product->price, 2) }}
