@@ -15,10 +15,19 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        // Obtener todos los productos con categoría y oferta
-        $products = Product::with(['category', 'offer'])->get();
+        // Iniciar la consulta con relaciones
+        $query = Product::with(['category', 'offer']);
+
+        // Filtrar por búsqueda si existe el parámetro 'search'
+        if ($request->has('search')) {
+            $searchTerm = $request->input('search');
+            $query->where('name', 'like', "%{$searchTerm}%");
+        }
+
+        // Obtener resultados
+        $products = $query->get();
 
         return view('products.index', compact('products'));
     }
