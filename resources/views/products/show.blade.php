@@ -50,7 +50,9 @@
                                 </span>
                             </div>
 
+                            <!-- Mostrar aviso solo si la oferta requiere comprar más de 1 unidad -->
                             @if($product->offer->min_quantity > 1)
+                            <!-- Mensaje informativo indicando la cantidad mínima para obtener el precio especial -->
                                 <p class="text-sm text-orange-600 mt-2 font-medium">
                                     * Precio especial comprando {{ $product->offer->min_quantity }} o más unidades
                                 </p>
@@ -98,11 +100,23 @@
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         
                         <!-- Selector de Tallas -->
+                        <!-- Antes de mostrar el selector, el sistema comprueba si el producto realmente tiene tallas.
+                        Solo se muestra este bloque si 'sizes' NO está vacío y contiene al menos un elemento. -->
                         @if(!empty($product->sizes) && count($product->sizes) > 0)
                             <div class="mb-4">
+                                
+                                <!-- Etiqueta del selector de tallas -->
                                 <label for="size" class="block text-gray-700 font-bold mb-2">Selecciona tu Talla:</label>
+                                
+                                <!-- Selector desplegable de tallas.
+                                El atributo REQUIRED obliga al usuario a elegir una talla antes de continuar.
+                                Mientras no se seleccione una opción válida, el formulario NO permitirá añadir al carrito. -->
                                 <select name="size" id="size" class="w-full border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500" required>
+                                    
+                                    <!-- Opción inicial deshabilitada, obliga a tomar una decisión -->
                                     <option value="" disabled selected>Elige una opción...</option>
+                                    
+                                    <!-- Recorrido de todas las tallas disponibles del producto -->
                                     @foreach($product->sizes as $size)
                                         <option value="{{ $size }}">{{ $size }}</option>
                                     @endforeach

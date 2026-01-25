@@ -26,9 +26,11 @@
             <!-- Buscador de Productos -->
             <div class="max-w-xl mx-auto mb-10">
                 <form action="{{ route('products.index') }}" method="GET" class="relative">
+                    <!-- Campo de texto donde el usuario escribe lo que quiere buscar -->
                     <input type="text" name="search" placeholder="¿Qué estás buscando? (ej. Camiseta Polo)" 
                            class="w-full py-4 pl-6 pr-14 rounded-full text-gray-900 border-none focus:outline-none focus:ring-4 focus:ring-blue-300 shadow-2xl text-lg placeholder-gray-400">
                     <button type="submit" class="absolute right-2 top-2 bg-primary-600 text-white p-2.5 rounded-full hover:bg-primary-700 transition duration-300 shadow-md flex items-center justify-center">
+                        <!-- Icono de lupa (SVG) que representa la acción de buscar -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>

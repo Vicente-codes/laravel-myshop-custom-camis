@@ -10,7 +10,7 @@
         </div>
 
         @if(!empty($products))
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Grid responsivo para mostrar los productos -->
                 @foreach($products as $product)
                     <x-product-card :product="$product" />
                 @endforeach

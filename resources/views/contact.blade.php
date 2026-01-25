@@ -12,14 +12,17 @@
 
             <div class="bg-white rounded-lg shadow-lg p-8">
                 <form action="{{ route('contact.store') }}" method="POST">
+                    <!-- Directiva obligatoria en Laravel para prevenir ataques de falsificación de petición en sitios cruzados. -->
                     @csrf
                     
                     <!-- Nombre -->
                     <div class="mb-6">
                         <label for="name" class="block text-gray-700 font-bold mb-2">Nombre Completo</label>
+                        <!-- old + name = Función de persistencia que evita que el usuario tenga que volver a escribir todo si comete un error en otro campo del formulario. -->
                         <input type="text" name="name" id="name" value="{{ old('name') }}"
                                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 @error('name') border-red-500 @enderror"
                                placeholder="Tu nombre">
+                        <!-- error + name = Función de validación que muestra un mensaje de error si el campo name tiene un error. -->
                         @error('name')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                         @enderror

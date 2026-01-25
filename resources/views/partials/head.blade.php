@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@yield('title', 'Custom Camis - Tienda Online')</title>
 
-<link rel="icon" href="{{ asset('images/fav.png') }}" type="image/png">
+<link rel="icon" href="{{ asset('images/fav.png') }}" type="image/png"> <!-- favicon -->
 
 <!-- Google Fonts: Outfit -->
 <link rel="preconnect" href="https://fonts.googleapis.com">

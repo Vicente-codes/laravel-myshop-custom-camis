@@ -17,6 +17,7 @@
         </div>
 
         <!-- Listado de Ofertas Grid -->
+        <!-- la clase group y group-hover de Tailwind permite que múltiples elementos (la barra de color, el badge de descuento y la sombra) reaccionen simultáneamente cuando el usuario pasa el ratón sobre la tarjeta. Esto mejora la interactividad y refuerza la percepción de una plataforma moderna y cuidada. -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             @forelse($offers as $offer)
                 <div class="group relative bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-1 overflow-hidden">

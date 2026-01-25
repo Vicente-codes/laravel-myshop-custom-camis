@@ -1,4 +1,5 @@
 <?php
+// app.php prepara la aplicación
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;

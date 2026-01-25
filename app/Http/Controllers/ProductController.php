@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+// Importamos los modelos que usaremos. 
+// El Service Container de Laravel se encargará de resolver automáticamente 
+// las dependencias cuando las pidamos en los métodos del controlador.
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Offer;
+
+// Request es inyectado automáticamente por el Service Container.
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -13,31 +18,33 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra un listado de productos.
+     * El Service Container inyecta automáticamente el objeto Request.
      */
     public function index(Request $request): View
     {
-        // Iniciar la consulta con relaciones
+        // Iniciar la consulta cargando relaciones para evitar consultas adicionales (Eager Loading)
         $query = Product::with(['category', 'offer']);
 
-        // Filtrar por búsqueda si existe el parámetro 'search'
+        // Si el usuario ha enviado un término de búsqueda, filtramos por nombre
         if ($request->has('search')) {
             $searchTerm = $request->input('search');
             $query->where('name', 'like', "%{$searchTerm}%");
         }
 
-        // Obtener resultados
+        // Ejecutar la consulta y obtener los productos
         $products = $query->get();
 
+        // Retornar la vista con los productos
         return view('products.index', compact('products'));
     }
 
     /**
-     * Display only products that have an active offer
+     * Muestra solo los productos que tienen una oferta activa.
      */
     public function onSale(): View
     {
-        // Solo productos con offer_id no nulo
+        // Filtrar productos cuyo offer_id no sea nulo
         $products = Product::with(['category', 'offer'])
             ->whereNotNull('offer_id')
             ->get();
@@ -50,7 +57,7 @@ class ProductController extends Controller
      */
     public function create(): View
     {
-        // Cargar todas las categorías y ofertas para los selectores del formulario
+        // Cargar todas las categorías y ofertas para mostrarlas en los select del formulario
         $categories = Category::all();
         $offers = Offer::all();
 
@@ -58,9 +65,10 @@ class ProductController extends Controller
     }
 
     /**
-     * Almacena un nuevo producto en la base de datos.
+     * Guarda un nuevo producto en la base de datos.
+     * El Service Container inyecta el Request automáticamente.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): RedirectResponse //Request representa la petición HTTP que llega al servidor
     {
         // PASO 1: Validar todos los datos del formulario, incluyendo la imagen
         $validated = $request->validate([
@@ -71,6 +79,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'offer_id' => 'nullable|exists:offers,id',
         ], [
+            // Mensajes personalizados de error
             'name.required' => 'El nombre del producto es obligatorio.',
             'name.unique' => 'Ya existe un producto con ese nombre.',
             'description.required' => 'La descripción es obligatoria.',
@@ -84,10 +93,10 @@ class ProductController extends Controller
             'offer_id.exists' => 'La oferta seleccionada no es válida.',
         ]);
 
-        // PASO 2: Procesar la imagen si fue subida
+        // PASO 2: Si se subió una imagen, procesarla y guardarla
         if ($request->hasFile('image')) {
-            // Guardar en el disco 'public' dentro de la carpeta 'products'
-            // Laravel genera automáticamente un nombre único para evitar colisiones
+            // Guardar la imagen en storage/app/public/products
+            // Laravel genera un nombre único automáticamente
             $imagePath = $request->file('image')->store('products', 'public');
             $validated['image'] = $imagePath;
         }
@@ -102,29 +111,33 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Muestra un producto concreto.
      */
     public function show(string $id): View
     {
-        // Validar ID
+        // Validar que el ID sea numérico y mayor que 0
         if (!is_numeric($id) || $id < 1) {
             abort(404, 'ID de producto inválido');
         }
 
-        // Obtener producto con relaciones
+        // Buscar el producto junto con sus relaciones
         $product = Product::with(['category', 'offer'])->find($id);
 
+        // Si no existe, mostrar error 404
         if (!$product) {
             abort(404, 'Producto no encontrado');
         }
 
+        // Obtener la categoría asociada
         $category = $product->category;
 
         return view('products.show', compact('product', 'category'));
     }
 
     /**
-     * Muestra el formulario para editar un producto existente.
+     * Muestra el formulario para editar un producto.
+     * Aquí el Service Container resuelve automáticamente el modelo Product
+     * gracias al Route Model Binding.
      */
     public function edit(Product $product): View
     {
@@ -136,7 +149,8 @@ class ProductController extends Controller
     }
 
     /**
-     * Actualiza un producto existente en la base de datos.
+     * Actualiza un producto existente.
+     * El Service Container inyecta tanto Request como Product.
      */
     public function update(Request $request, Product $product): RedirectResponse
     {
@@ -150,7 +164,7 @@ class ProductController extends Controller
             'offer_id' => 'nullable|exists:offers,id',
         ]);
 
-        // PASO 2: Manejar la subida de la nueva imagen
+        // PASO 2: Si se subió una nueva imagen, reemplazar la anterior
         if ($request->hasFile('image')) {
             // Eliminar la imagen anterior si existe para no acumular archivos
             if ($product->image) {
@@ -171,11 +185,12 @@ class ProductController extends Controller
     }
 
     /**
-     * Elimina un producto de la base de datos.
+     * Elimina un producto.
+     * El Service Container resuelve el modelo Product automáticamente.
      */
     public function destroy(Product $product): RedirectResponse
     {
-        // PASO 1: Eliminar la imagen asociada si existe
+        // PASO 1: Si el producto tiene imagen, eliminarla del almacenamiento
         if ($product->image) {
             Storage::disk('public')->delete($product->image);
         }
@@ -194,6 +209,7 @@ class ProductController extends Controller
      */
     public function adminIndex(): View
     {
+        // Obtener productos ordenados por fecha de creación (más recientes primero)
         $products = Product::with(['category', 'offer'])->latest()->get();
         return view('admin.products.index', compact('products'));
     }

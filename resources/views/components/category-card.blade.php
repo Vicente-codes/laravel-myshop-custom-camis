@@ -3,6 +3,8 @@
 
 <div class="bg-white rounded-lg shadow-lg p-6 product-card cursor-pointer hover:shadow-xl transition {{ $class }}">
     <!-- Icono -->
+    <!-- Se implementa directiva if para mostrar imagen o icono por defecto -->
+    <!-- La clase object-cover se usa para mantener la proporción de la imagen -->
     @if($category->image)
         <img src="{{ asset('images/' . $category->image) }}" alt="{{ $category->name }}" class="w-full h-48 object-cover rounded-t-lg mb-4">
     @else
