@@ -102,6 +102,9 @@ class ProductController extends Controller
         }
 
         // PASO 3: Crear el producto con los datos validados
+        // AÑADIDO: Asignar tallas por defecto (S, M, L, XL) automáticamente
+        $validated['sizes'] = ['S', 'M', 'L', 'XL'];
+        
         Product::create($validated);
 
         // PASO 4: Redirigir con mensaje de éxito
