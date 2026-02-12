@@ -72,6 +72,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Rutas para la lista de deseos (Wishlist)
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
+    Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
 });
 
 
@@ -83,17 +88,17 @@ Route::middleware('auth')->group(function () {
 // - Pasar por un middleware personalizado 'log.activity' que registra actividad 
 // Además, todas las rutas tendrán el prefijo /admin y el nombre admin.*
 
-Route::middleware(['auth', 'log.activity'])->prefix('admin')->name('admin.')->group(function () {
+use App\Http\Controllers\UserController;
+
+Route::middleware(['auth', 'log.activity', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Página principal de gestión de productos en el panel admin
     Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
 
+    // Gestión de Usuarios
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
     // Rutas REST completas para productos, excepto index y show (ya existen en público)
     Route::resource('products', ProductController::class)->except(['index', 'show']);
-    
-    // Rutas para la lista de deseos (Wishlist)
-    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
-    Route::post('/wishlist/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
-    Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
 });
 
 // =========================================== 

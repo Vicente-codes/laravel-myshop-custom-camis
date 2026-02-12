@@ -19,10 +19,15 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     {{-- Enlaces de Administración --}}
-                    <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
-                        {{ __('Productos') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('admin.wishlist.index')" :active="request()->routeIs('admin.wishlist.*')">
+                    @if(Auth::user()->isAdmin())
+                        <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
+                            {{ __('Productos') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                            {{ __('Usuarios') }}
+                        </x-nav-link>
+                    @endif
+                    <x-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
                         {{ __('❤️ Lista de Deseos') }}
                     </x-nav-link>
                 </div>
@@ -84,10 +89,15 @@
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
             {{-- Enlaces de Administración --}}
-            <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
-                {{ __('Productos') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.wishlist.index')" :active="request()->routeIs('admin.wishlist.*')">
+            @if(Auth::user()->isAdmin())
+                <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
+                    {{ __('Productos') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                    {{ __('Usuarios') }}
+                </x-responsive-nav-link>
+            @endif
+            <x-responsive-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
                 {{ __('❤️ Lista de Deseos') }}
             </x-responsive-nav-link>
         </div>

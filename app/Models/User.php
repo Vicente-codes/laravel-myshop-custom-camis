@@ -11,6 +11,9 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    const ROLE_ADMIN = 'admin';
+    const ROLE_CUSTOMER = 'customer';
+
     /**
      * CAMPOS ASIGNABLES
      * 
@@ -26,6 +29,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -80,5 +84,21 @@ class User extends Authenticatable
         return $this->belongsToMany(\App\Models\Product::class, 'product_user')
                     ->withPivot('quantity')
                     ->withTimestamps();
+    }
+
+    /**
+     * Check if the user is an admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    /**
+     * Check if the user is a customer.
+     */
+    public function isCustomer(): bool
+    {
+        return $this->role === self::ROLE_CUSTOMER;
     }
 }

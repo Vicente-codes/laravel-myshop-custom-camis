@@ -105,12 +105,18 @@
                 ← Seguir Comprando
             </a>
             {{-- FORMULARIO PARA FINALIZAR COMPRA --}}
-            <form action="{{ route('cart.checkout') }}" method="POST">
-                @csrf
-                <button type="submit" class="bg-green-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-green-700 transition">
-                    Realizar Pedido →
-                </button>
-            </form>
+            @auth
+                <form action="{{ route('cart.checkout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="bg-green-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-green-700 transition">
+                        Realizar Pedido →
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="bg-blue-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                    Iniciar Sesión para Comprar
+                </a>
+            @endauth
         </div>
     @endif
 </div>
