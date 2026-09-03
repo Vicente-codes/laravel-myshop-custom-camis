@@ -1,5 +1,5 @@
 # MyShop - Custom Camis
-
+<img width="1149" height="756" alt="home" src="https://github.com/user-attachments/assets/bbe5711b-015b-4f31-b94f-926120acc382" />
 Una aplicación de comercio electrónico desarrollada en Laravel para la gestión y venta de camisetas personalizadas. Permite a los usuarios explorar productos, gestionar su carrito de compras y realizar pedidos, mientras ofrece a los administradores un panel completo para gestionar productos, categorías y usuarios.
 
 ## Tecnologías Utilizadas
