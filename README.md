@@ -41,7 +41,7 @@ La estructura sigue el estándar de Laravel, destacando los siguientes directori
 
 Para ejecutar este proyecto en local necesitas tener instalado:
 
-*   **PHP:** Versión 8.2 o superior.
+*   **PHP:** Versión 8.4 o superior.
 *   **Composer:** Última versión estable.
 *   **Node.js & NPM:** Para compilar los assets del frontend.
 *   **Docker Desktop:** Recomendado para usar Laravel Sail (base de datos y servicios listos para usar).
