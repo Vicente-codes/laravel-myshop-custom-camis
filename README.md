@@ -83,6 +83,10 @@ Sigue estos pasos para desplegar el proyecto en tu máquina local:
     php artisan migrate --seed
     ```
 
+    En local, `migrate --seed` mantiene el camino antiguo: crea un usuario demo y dos usuarios aleatorios con las credenciales de desarrollo del seeder/factory; ninguno recibe rol de administrador. Las credenciales locales no se publican en este README.
+
+    En producción, `migrate --seed` no siembra datos por defecto. Para una demo, define `ALLOW_DEMO_SEED=true`, `DEMO_ADMIN_PASSWORD` y `DEMO_CUSTOMER_PASSWORD` como secretos (mínimo 12 caracteres), ejecuta `php artisan migrate --seed --force` y después vuelve a poner `ALLOW_DEMO_SEED=false`. El modo demo crea un administrador y un cliente; los emails están en `config/demo.php`.
+
 6.  **Instalar y compilar dependencias de Frontend:**
     ```bash
     npm install
@@ -97,10 +101,7 @@ Una vez iniciada la aplicación, puedes acceder a ella desde tu navegador:
 *   **Navegación:** Explora el catálogo de productos, filtra por categorías y añade items al carrito.
 
 ### Acceso de Prueba (Admin / Usuario)
-El seeder crea usuarios de prueba automáticamente. Puedes usar las siguientes credenciales para acceder a las funciones protegidas y al panel de administración:
-
-*   **Email:** `demo@example.com`
-*   **Contraseña:** `password`
+Las credenciales de prueba no se publican en este README. En local, `migrate --seed` mantiene el camino antiguo; en producción/demo, el acceso se configura con `ALLOW_DEMO_SEED`, `DEMO_ADMIN_PASSWORD` y `DEMO_CUSTOMER_PASSWORD`.
 
 ## Autores y Créditos
 
