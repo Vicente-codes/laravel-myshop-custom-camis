@@ -45,6 +45,18 @@ class ProductUserSeeder extends Seeder
          */
         $cartItems = $this->getCart();
 
+        if (config('demo.allow_seed')) {
+            $user = User::where('email', config('demo.customer_email'))->firstOrFail();
+
+            foreach ($cartItems as $item) {
+                $user->products()->syncWithoutDetaching([
+                    $item['product_id'] => ['quantity' => $item['quantity']],
+                ]);
+            }
+
+            return;
+        }
+
         /**
          * OBTENER EL USUARIO DEMO
          * 

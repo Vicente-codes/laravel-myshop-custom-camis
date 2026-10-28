@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use RuntimeException;
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,6 +34,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $demoMode = (bool) config('demo.allow_seed');
+
+        if (app()->isProduction() && ! $demoMode) {
+            $this->command?->warn('Seeding demo omitido: ALLOW_DEMO_SEED no está activado.');
+
+            return;
+        }
+
+        if ($demoMode) {
+            $this->validateDemoPasswords();
+            $this->command?->info('Seeding demo activado: ALLOW_DEMO_SEED=true.');
+        }
+
         /**
          * EJECUTAR SEEDERS EN ORDEN CORRECTO
          * 
@@ -50,6 +64,30 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             ProductUserSeeder::class,
         ]);
+    }
+
+    private function validateDemoPasswords(): void
+    {
+        $invalid = [];
+
+        foreach ([
+            'DEMO_ADMIN_PASSWORD' => config('demo.admin_password'),
+            'DEMO_CUSTOMER_PASSWORD' => config('demo.customer_password'),
+        ] as $name => $password) {
+            if (! is_string($password) || strlen($password) < 12) {
+                $invalid[] = $name;
+            }
+        }
+
+        if ($invalid === []) {
+            return;
+        }
+
+        $message = count($invalid) === 1
+            ? "Seeding demo abortado: {$invalid[0]} debe estar definida y tener al menos 12 caracteres."
+            : 'Seeding demo abortado: '.implode(' y ', $invalid).' deben estar definidas y tener al menos 12 caracteres.';
+
+        throw new RuntimeException($message);
     }
 }
 

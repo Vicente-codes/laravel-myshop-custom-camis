@@ -30,6 +30,7 @@ class ProductSeeder extends Seeder
     {
         // Cargar productos desde database/data/mock-products.php
         $products = $this->getProducts();
+        $demoMode = (bool) config('demo.allow_seed');
 
         // Insertar cada producto en la tabla products
         foreach ($products as $product) {
@@ -52,7 +53,11 @@ class ProductSeeder extends Seeder
              *     'offer_id' => 1,        // Referencia a offer con id=1
              * ]
              */
-            Product::create($product);
+            if ($demoMode) {
+                Product::updateOrCreate(['id' => $product['id']], $product);
+            } else {
+                Product::create($product);
+            }
         }
     }
 }

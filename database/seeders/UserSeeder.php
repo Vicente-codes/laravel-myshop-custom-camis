@@ -20,6 +20,12 @@ class UserSeeder extends Seeder
     
     public function run(): void
     {
+        if (config('demo.allow_seed')) {
+            $this->seedDemoUsers();
+
+            return;
+        }
+
         /**
          * CREAR UN USUARIO ESPECÍFICO
          * 
@@ -56,5 +62,22 @@ class UserSeeder extends Seeder
          * 2. Usuario Aleatorio 1 (email aleatorio)
          * 3. Usuario Aleatorio 2 (email aleatorio)
          */
+    }
+
+    private function seedDemoUsers(): void
+    {
+        $admin = User::firstOrNew(['email' => config('demo.admin_email')]);
+        $admin->name = 'Administrador Demo';
+        $admin->password = config('demo.admin_password');
+        $admin->email_verified_at = now();
+        $admin->role = User::ROLE_ADMIN;
+        $admin->save();
+
+        $customer = User::firstOrNew(['email' => config('demo.customer_email')]);
+        $customer->name = 'Cliente Demo';
+        $customer->password = config('demo.customer_password');
+        $customer->email_verified_at = now();
+        $customer->role = User::ROLE_CUSTOMER;
+        $customer->save();
     }
 }

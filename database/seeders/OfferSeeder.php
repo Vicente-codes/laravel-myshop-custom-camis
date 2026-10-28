@@ -21,10 +21,15 @@ class OfferSeeder extends Seeder
     {
         // Cargar ofertas desde database/data/mock-offers.php
         $offers = $this->getOffers();
+        $demoMode = (bool) config('demo.allow_seed');
 
         // Insertar cada oferta en la tabla offers
         foreach ($offers as $offer) {
-            Offer::create($offer);
+            if ($demoMode) {
+                Offer::updateOrCreate(['id' => $offer['id']], $offer);
+            } else {
+                Offer::create($offer);
+            }
         }
     }
 }

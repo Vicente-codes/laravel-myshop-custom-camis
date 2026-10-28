@@ -39,6 +39,7 @@ class CategorySeeder extends Seeder
          * ]
          */
         $categories = $this->getCategories();
+        $demoMode = (bool) config('demo.allow_seed');
 
         /**
          * INSERTAR DATOS EN LA BD
@@ -71,7 +72,11 @@ class CategorySeeder extends Seeder
              * $this->call(...);
              * Schema::enableForeignKeyConstraints();
              */
-            Category::create($category);
+            if ($demoMode) {
+                Category::updateOrCreate(['id' => $category['id']], $category);
+            } else {
+                Category::create($category);
+            }
         }
 
         /**
