@@ -13,7 +13,7 @@ Puedes consultar un recorrido visual de la aplicación en la página de detalle 
 Este proyecto utiliza un stack moderno basado en PHP y JavaScript:
 
 *   **Backend:**
-    *   **PHP:** ^8.2
+    *   **PHP:** ^8.4
     *   **Laravel Framework:** ^12.0
     *   **MySQL:** Base de datos relacional.
 *   **Frontend:**
