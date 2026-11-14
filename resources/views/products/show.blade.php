@@ -10,7 +10,7 @@
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <div class="h-96 bg-gray-200 flex items-center justify-center overflow-hidden">
                     @if(!empty($product->image))
-                        <img src="{{ Str::contains($product->image, '/') ? asset('storage/' . $product->image) : asset('images/' . $product->image) }}" 
+                        <img src="{{ $product->image_url }}" 
                              alt="{{ $product->name }}" 
                              class="w-full h-full object-cover">
                     @else

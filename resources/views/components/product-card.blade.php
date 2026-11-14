@@ -18,9 +18,7 @@
     <!-- Contenedor de la imagen del producto -->
     <div class="h-48 bg-gray-200 flex items-center justify-center overflow-hidden {{ $product->offer ? 'bg-gradient-to-br from-orange-50 to-red-50' : '' }}">
         @if(!empty($product->image))
-            <!-- Mostrar la imagen del producto Si contiene '/', viene de storage, Si no, viene de /public/images-->
-            <!-- Esto permite usar dos sistemas de almacenamiento sin romper nada. -->
-            <img src="{{ Str::contains($product->image, '/') ? asset('storage/' . $product->image) : asset('images/' . $product->image) }}" 
+            <img src="{{ $product->image_url }}" 
                  alt="{{ $product->name }}" 
                  class="w-full h-full object-cover">
         @else

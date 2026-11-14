@@ -47,6 +47,27 @@ class Product extends Model
         ];
     }
 
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                if (empty($this->image)) {
+                    return null;
+                }
+
+                if (str_starts_with($this->image, 'http')) {
+                    return $this->image;
+                }
+
+                if (str_starts_with($this->image, 'products/')) {
+                    return asset('storage/'.$this->image);
+                }
+
+                return asset('images/'.$this->image);
+            },
+        );
+    }
+
     /**
     * ACCESSOR: final_price
     * Calcula el precio final aplicando descuento si existe oferta y se cumplen las condiciones.

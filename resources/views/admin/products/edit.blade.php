@@ -36,7 +36,7 @@
                             <label for="image" class="block text-sm font-medium text-gray-700">Imagen del Producto</label>
                             @if ($product->image)
                                 <div class="my-2">
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Imagen actual" class="h-24 w-24 object-cover rounded-md">
+                                    <img src="{{ $product->image_url }}" alt="Imagen actual" class="h-24 w-24 object-cover rounded-md">
                                     <p class="text-xs text-gray-500 mt-1">Imagen actual. Sube una nueva para reemplazarla.</p>
                                 </div>
                             @endif
