@@ -22,6 +22,7 @@ return [
         'name' => 'Descuento por Volumen',
         'slug' => 'descuento-volumen',
         'discount_percentage' => 20,
+        'min_quantity' => 100,
         'description' => 'Descuento del 20% en pedidos mayores a 100 unidades'
     ],
 
@@ -32,6 +33,7 @@ return [
         'name' => 'Promoción Inicio de Año',
         'slug' => 'promo-inicio-ano',
         'discount_percentage' => 15,
+        'min_quantity' => 1,
         'description' => 'Descuento del 15% en todas las camisetas básicas durante enero y febrero'
     ],
 
@@ -42,6 +44,7 @@ return [
         'name' => 'Pack de Eventos',
         'slug' => 'pack-eventos',
         'discount_percentage' => 25,
+        'min_quantity' => 1,
         'description' => 'Descuento del 25% en uniformes corporativos para eventos'
     ],
 
@@ -52,6 +55,7 @@ return [
         'name' => 'Ofertas Estacionales',
         'slug' => 'ofertas-estacionales',
         'discount_percentage' => 10,
+        'min_quantity' => 1,
         'description' => 'Descuento del 10% en prendas de temporada al cambio de estación'
     ],
 
@@ -62,6 +66,7 @@ return [
         'name' => 'Descuento Cliente Recurrente',
         'slug' => 'descuento-cliente-recurrente',
         'discount_percentage' => 12,
+        'min_quantity' => 1,
         'description' => 'Descuento del 12% para clientes con compras previas'
     ],
 ];

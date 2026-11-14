@@ -25,7 +25,8 @@ return [
         'price' => 8.50,
         'category_id' => 1,
         'offer_id' => 1,
-        'image' => 'camisetas-basicas.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/camiseta-basica-blanca.webp'
     ],
 
     2 => [
@@ -35,7 +36,8 @@ return [
         'price' => 8.50,
         'category_id' => 1,
         'offer_id' => 2,
-        'image' => 'camisetas-basicas.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/camiseta-basica-negra.webp'
     ],
 
     3 => [
@@ -45,7 +47,8 @@ return [
         'price' => 8.50,
         'category_id' => 1,
         'offer_id' => null,
-        'image' => 'camisetas-basicas.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/camiseta-basica-azul.webp'
     ],
 
     // PRODUCTOS CATEGORÍA 2: Camisetas Personalizadas
@@ -57,7 +60,8 @@ return [
         'price' => 15.99,
         'category_id' => 2,
         'offer_id' => 3,
-        'image' => 'camisetas-personalizadas.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/camiseta-serigrafia-logo-empresa.jpg'
     ],
 
     5 => [
@@ -67,7 +71,8 @@ return [
         'price' => 18.50,
         'category_id' => 2,
         'offer_id' => null,
-        'image' => 'camisetas-personalizadas.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/camiseta-dtg-diseno-completo.webp'
     ],
 
     6 => [
@@ -77,7 +82,8 @@ return [
         'price' => 12.75,
         'category_id' => 2,
         'offer_id' => 5,
-        'image' => 'camisetas-personalizadas.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/camiseta-vinilo-numero-nombre.jpg'
     ],
 
     // PRODUCTOS CATEGORÍA 3: Uniformes Corporativos
@@ -89,7 +95,8 @@ return [
         'price' => 45.00,
         'category_id' => 3,
         'offer_id' => 3,
-        'image' => 'uniformes-corporativos.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/uniforme-corporativo-completo.jpg'
     ],
 
     8 => [
@@ -99,7 +106,8 @@ return [
         'price' => 28.50,
         'category_id' => 3,
         'offer_id' => null,
-        'image' => 'uniformes-corporativos.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/chaleco-corporativo-logo.png'
     ],
 
     // PRODUCTOS CATEGORÍA 4: Prendas Deportivas
@@ -111,7 +119,8 @@ return [
         'price' => 16.99,
         'category_id' => 4,
         'offer_id' => 4,
-        'image' => 'prendas-deportivas.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/camiseta-deportiva-tecnica.jpg'
     ],
 
     10 => [
@@ -121,7 +130,8 @@ return [
         'price' => 35.50,
         'category_id' => 4,
         'offer_id' => 1,
-        'image' => 'prendas-deportivas.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/conjunto-uniforme-deportivo.jpg'
     ],
 
     // PRODUCTOS CATEGORÍA 5: Prendas de Temporada
@@ -133,7 +143,8 @@ return [
         'price' => 11.99,
         'category_id' => 5,
         'offer_id' => 4,
-        'image' => 'prendas-temporada.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/camiseta-verano-colores-vibrantes.jpg'
     ],
 
     12 => [
@@ -143,6 +154,7 @@ return [
         'price' => 19.99,
         'category_id' => 5,
         'offer_id' => 2,
-        'image' => 'prendas-temporada.jpg'
+        'sizes' => ['S', 'M', 'L', 'XL'],
+        'image' => 'catalogo/camiseta-invierno-termica.jpg'
     ],
 ];
