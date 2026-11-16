@@ -1,5 +1,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@if (config('demo.noindex'))
+    <meta name="robots" content="noindex, nofollow">
+@endif
 <title>@yield('title', 'Custom Camis - Tienda Online')</title>
 
 <link rel="icon" href="{{ asset('images/fav.png') }}" type="image/png"> <!-- favicon -->

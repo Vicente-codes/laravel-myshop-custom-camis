@@ -18,6 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => \App\Http\Middleware\CheckAdminRole::class,
             'registration.enabled' => \App\Http\Middleware\EnsureRegistrationEnabled::class,
         ]);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\AddNoindexHeader::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
