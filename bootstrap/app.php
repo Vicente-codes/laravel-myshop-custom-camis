@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'log.activity' => \App\Http\Middleware\LogUserActivity::class,
             'admin' => \App\Http\Middleware\CheckAdminRole::class,
+            'registration.enabled' => \App\Http\Middleware\EnsureRegistrationEnabled::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

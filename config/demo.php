@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'registration_enabled' => env('REGISTRATION_ENABLED', true),
     'allow_seed' => env('ALLOW_DEMO_SEED', false),
     'admin_password' => env('DEMO_ADMIN_PASSWORD'),
     'customer_password' => env('DEMO_CUSTOMER_PASSWORD'),
