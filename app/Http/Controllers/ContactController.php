@@ -41,13 +41,13 @@ class ContactController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string|min:10',
+            'subject' => 'required|in:General,Pedido,Diseño,Soporte',
+            'message' => 'required|string|min:10|max:2000',
         ]);
 
         // 2. Enviar el correo
         try {
-            \Illuminate\Support\Facades\Mail::to('admin@customcamis.com')->send(new \App\Mail\ContactFormMail($validated));
+            \Illuminate\Support\Facades\Mail::to(config('demo.contact_recipient'))->send(new \App\Mail\ContactFormMail($validated));
         } catch (\Exception $e) {
             // En un entorno real, registraríamos el error
             // Log::error('Error enviando correo de contacto: ' . $e->getMessage());

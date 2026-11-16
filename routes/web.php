@@ -32,7 +32,7 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 // Página de contacto (formulario de contacto). 
 Route::get('/contact', [ContactController::class, 'index'])->name('contact'); // GET /contact → muestra el formulario
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store'); // POST /contact → procesa el formulario y envía el mensaje
+Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:contact')->name('contact.store'); // POST /contact → procesa el formulario y envía el mensaje
 
 // Rutas de categorías en modo solo lectura. 
 // resource() genera varias rutas REST automáticamente, pero aquí limitamos a index y show.

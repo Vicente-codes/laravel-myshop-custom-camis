@@ -40,7 +40,7 @@ class ContactFormTest extends TestCase
         $response->assertSessionHas('success');
 
         Mail::assertSent(ContactFormMail::class, function ($mail) use ($data) {
-            return $mail->hasTo('admin@customcamis.com') &&
+            return $mail->hasTo(config('demo.contact_recipient')) &&
                    $mail->data['name'] === $data['name'] &&
                    $mail->data['message'] === $data['message'];
         });
