@@ -17,14 +17,14 @@
             <div>
                 <h6 class="font-bold mb-4">Contacto</h6>
                 <ul class="space-y-2 text-gray-400">
-                    <li>📧 info@customcamis.com</li>
+                    <li>📧 contacto@example.com</li>
                     <li>📞 +34 XXX XXX XXX</li>
                     <li>📍 Madrid, España</li>
                 </ul>
             </div>
         </div>
         <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 Custom Camis S.L. Todos los derechos reservados.</p>
+            <p>&copy; {{ date('Y') }} Custom Camis S.L. Todos los derechos reservados.</p>
         </div>
     </div>
 </footer>
