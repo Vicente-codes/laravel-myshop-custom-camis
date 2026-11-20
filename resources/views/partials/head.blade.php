@@ -5,7 +5,7 @@
 @endif
 <title>@yield('title', 'Custom Camis - Tienda Online')</title>
 
-<link rel="icon" href="{{ asset('images/fav.png') }}" type="image/png"> <!-- favicon -->
+<link rel="icon" href="{{ asset('images/ccfav.png') }}" type="image/png"> <!-- favicon -->
 
 <!-- Google Fonts: Outfit -->
 <link rel="preconnect" href="https://fonts.googleapis.com">

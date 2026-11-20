@@ -5,7 +5,7 @@
             <!-- Logo -->
             <div class="flex flex-1 items-center space-x-4">
             <a href="{{ route('welcome') }}">
-                    <img src="{{ asset('images/horizontal2.png') }}" alt="Custom Camis" class="h-16 w-auto">
+                    <img src="{{ asset('images/cc5c.png') }}" alt="Custom Camis" class="h-16 w-auto" width="2172" height="420">
                 </a>
             </div>
             
